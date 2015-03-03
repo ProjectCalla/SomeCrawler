@@ -1,3 +1,3 @@
 __author__ = 'j'
-USERNAME = ""
-PASSWORD = ""
+USERNAME = "user"
+PASSWORD = "pass"
