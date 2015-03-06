@@ -1,0 +1,25 @@
+__author__ = 'j'
+
+from selenium import webdriver
+from pyvirtualdisplay import Display
+import time
+
+def login(browser, username, password):
+    browser.get("http://hint.hro.nl")
+    userId = "username"
+    passId = "password"
+    submitForm = "submit"
+    body = browser.find_element_by_tag_name("body")
+    #fill in form
+    browser.find_element_by_id(userId).send_keys(username)
+    browser.find_element_by_id(passId).send_keys(password)
+    browser.find_element_by_id(submitForm).click()
+    time.sleep(2)
+    return browser
+
+def createBrowser():
+    display = Display(visible=0, size=(1024, 768))
+    display.start()
+    #Initialize browser
+    browser = webdriver.Firefox()
+    return browser

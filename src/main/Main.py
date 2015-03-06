@@ -13,10 +13,11 @@ class Main:
         pass
     def fullCrawl(self):
         session = self.login.login(self.username, self.password)
+        f = session.get("https://hint.hro.nl")
 
         #crawls webmail
         w = Webmail.Webmail()
-        w.crawl_url("https://webmail.hro.nl", session.cookies)
+        w.start("https://webmail.hro.nl", {})
 
 
 
