@@ -20,9 +20,10 @@ def login(browser, username, password):
 
 def createBrowser():
     display = Display(visible=0, size=(1024, 768))
-    #display.start()
+    display.start()
     #Initialize browser
     browser = webdriver.Firefox()
     return browser
 def closeBrowserFirefox(browser):
     browser.close()
+    #pkill firefox

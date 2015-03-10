@@ -8,6 +8,7 @@ from lxml import etree
 from src.controller import RegexController as regex
 
 class Mededelingen:
+    #First phase crawler
     #TODO clean up. make configs, do something
     wdk_wid_id = "wid_1376787"
     rmu_wid_id = "wid_1376786"

@@ -1,9 +1,12 @@
 __author__ = 'j'
 
 from src.config import Config
-from src.controller import SeleniumController as sel
+from src.controller import SeleniumController as sel, RegexController as regex
 from lxml import etree
 import time
+from selenium.webdriver.common.by import By
+from src.utils import TimeParser as timep
+
 class Osiris:
     def __init__(self):
         pass
@@ -41,6 +44,7 @@ class Osiris:
                             personalia[temp] = g[0]
         personalia['group'] = group_arr
         personalia.pop('Adres')
+        print personalia
         return personalia
 
     def getResults(self, browser):
@@ -52,30 +56,30 @@ class Osiris:
         for i in range(2, 17):
             item = {}
             item['test_date'] = source.xpath(date.format(i, 1))[0]
-            item['code'] = source.xpath(date.format(i, 2))[0]
+            item['course_code'] = source.xpath(date.format(i, 2))[0]
             item['course'] = source.xpath(date.format(i, 3))[0]
-            item['exam'] = source.xpath(date.format(i, 4))[0]
+            item['exam_type'] = source.xpath(date.format(i, 4))[0]
             item['professor'] = source.xpath(date.format(i, 5))[0]
-            item['wage'] = source.xpath(date.format(i, 6))[0]
+            item['weging'] = source.xpath(date.format(i, 6))[0]
             item['result'] = source.xpath(date.format(i, 8))[0]
             item['mutation_date'] = source.xpath(date.format(i, 10))[0]
             b[str(i)] = item
+        print b
         return b
 
     def getStudiepunten(self, browser):
         total_points = ''
-        points = '//*[@id="OpleidingExamenfaseSpecialisatieStudent"]/table/tbody/tr/td/table/tbody/tr[1]/td[7]/a[1]'
-        get_js = '//*[@id="OpleidingExamenfaseSpecialisatieStudent"]/table/tbody/tr/td/table/tbody/tr[1]/td[7]/a[1]/@onclick'
+        points = '//*[@id="OpleidingExamenfaseSpecialisatieStudent"]/table/tbody/tr/td/table/tbody/tr[2]/td[7]/a[1]'
+
+        xpath_date = '//*[@id="form0"]/div[11]/span/text()'
+        xpath_course = '//*[@id="form0"]/div[17]/span/text()'
+        #more xpaths
 
         browser.get(Config.OSIRIS_VOORTGANG)
+        browser.find_element_by_xpath(points).click()
+        browser.get(Config.OSIRIS_VOORTGANG_EMBEDDEDREPORT)
 
-        a = browser.find_element_by_xpath(points).click()
-        print "entering sleep"
-        time.sleep(10)
-        print "stop sleep"
-
-        print browser.page_source
-
-        print etree.HTML(browser.page_source)
-
+        source = etree.HTML(browser.page_source)
+        print regex.filterXao(regex.filterOsirisEmbeddedReportUnicode(str(source.xpath(xpath_course))), "")
+        print regex.filterXao(regex.filterOsirisEmbeddedReportUnicode(str(source.xpath(xpath_date))), "")
 
