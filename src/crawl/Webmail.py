@@ -3,8 +3,11 @@ __author__ = 'j'
 from selenium.webdriver.common.keys import Keys
 from src.config import Config
 import time
-
+from src.controller import RegexController as regex
+from lxml import etree
 from src.controller import SeleniumController as sel
+
+
 class Webmail:
     url = None
     def __init__(self):
@@ -25,8 +28,6 @@ class Webmail:
     def start(self, url, cookies):
         self.url = url
         browser = sel.createBrowser()
-
-
         #Adding cookie
         cookieDict = {}
         for c  in cookies:
@@ -53,6 +54,20 @@ class Webmail:
         frame = browser.find_element_by_xpath('//*[@id="idWebAccFrameset"]/frame[2]')
         print frame.text
         browser.switch_to.frame(frame)
-        print browser.find_element_by_id("msglist").text
+        a = browser.find_element_by_id("msglist").text
+
+        emails = self.parseSourceTenEmails(browser)
+
         #write to db etc etc
 
+    def parseSourceTenEmails(self, browser):
+        source = etree.HTML(browser.page_source)
+        mail_table = '//*[@id="msglist"]/div[1]/div/table/tbody/tr[%s]'
+        email_info = '//*[@id="msglist"]/div[1]/div/table/tbody/tr[{0}]/td[{1}]/text()'
+        emails = {}
+        for i in range(1, 11):
+            item = {}
+            for y in range(3, 7):
+                item[str(y)] = regex.filterListUnicode(str(source.xpath(email_info.format(i,y))))
+            emails[str(i)] = item
+        return emails

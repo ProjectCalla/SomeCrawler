@@ -8,6 +8,7 @@ from lxml import etree
 from src.controller import RegexController as regex
 
 class Mededelingen:
+    #TODO clean up. make configs, do something
     wdk_wid_id = "wid_1376787"
     rmu_wid_id = "wid_1376786"
     rbs_wid_id = "wid_1376785"
@@ -32,7 +33,7 @@ class Mededelingen:
         browser = sel.login(browser, Config.USERNAME, Config.PASSWORD)
         browser.get("http://hint.hro.nl")
         time.sleep(15)   #Sleep to wait till the Mededelingen loads
-        html = browser.page_source  #check if loading exists
+        html = browser.page_source  #TODO check if loading exists
 
         print self.getMededelingen(html, self.wdk_wid_id)
         print self.getMededelingen(html, self.rmu_wid_id)

@@ -1,11 +1,12 @@
 __author__ = 'j'
 from src.login import Login
-from src.crawl import Webmail
+from src.crawl import Webmail, Osiris
 from src.config import Config
 
 
 class Main:
     login = Login.Login()
+    osiris = Osiris.Osiris()
     username = Config.USERNAME
     password = Config.PASSWORD
     def __init__(self):
@@ -13,12 +14,11 @@ class Main:
         pass
     def fullCrawl(self):
         session = self.login.login(self.username, self.password)
-        f = session.get("https://hint.hro.nl")
+        f = session.get(Config.HINT_HOME)
+        self.osiris.start(session)
 
         #crawls webmail
-        w = Webmail.Webmail()
-        w.start("https://webmail.hro.nl", {})
-
-
+        #w = Webmail.Webmail()
+        #w.start(Config.WEBMAIL_HOME, {})
 
 Main().fullCrawl()

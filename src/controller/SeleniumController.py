@@ -3,9 +3,10 @@ __author__ = 'j'
 from selenium import webdriver
 from pyvirtualdisplay import Display
 import time
+from src.config import Config
 
 def login(browser, username, password):
-    browser.get("http://hint.hro.nl")
+    browser.get(Config.HINT_HOME)
     userId = "username"
     passId = "password"
     submitForm = "submit"
@@ -19,7 +20,9 @@ def login(browser, username, password):
 
 def createBrowser():
     display = Display(visible=0, size=(1024, 768))
-    display.start()
+    #display.start()
     #Initialize browser
     browser = webdriver.Firefox()
     return browser
+def closeBrowserFirefox(browser):
+    browser.close()
