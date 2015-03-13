@@ -18,7 +18,8 @@ class MySqlManager:
         db.close()
 
     def executeQuery(self, db, query):
-        return db.cursor().execute(query)
-
+        cur = db.cursor()
+        cur.execute(query)
+        return cur
     def getTimestamp(self):
         return strftime("%Y-%m-%d %H:%M:%S")
