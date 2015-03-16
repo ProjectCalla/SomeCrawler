@@ -3,7 +3,7 @@ __author__ = 'j'
 import requests
 from lxml import etree
 
-from somecrawler.controller import RegexController as regex
+from somecrawler.crawler.controller import RegexController as regex
 from somecrawler.crawler.config import Config
 
 

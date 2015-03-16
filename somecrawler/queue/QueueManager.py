@@ -1,7 +1,6 @@
 __author__ = 'j'
 from somecrawler.queue import PriorityQueue
 from somecrawler.user import User, UserController
-import Queue
 
 class QueueManager:
     pQueue = PriorityQueue.PQueue()

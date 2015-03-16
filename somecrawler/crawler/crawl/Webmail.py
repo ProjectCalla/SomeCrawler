@@ -1,14 +1,11 @@
 __author__ = 'j'
-
 import time
 from lxml import etree
-
 from selenium.webdriver.common.keys import Keys
-
 from somecrawler.crawler.config import Config
-from somecrawler.controller import RegexController as regex
-from somecrawler.controller import SeleniumController as sel
-
+from somecrawler.crawler.controller import RegexController as regex, SeleniumController as sel
+import logging
+from somecrawler.crawler.config import XpathConfig as xpathConf
 
 class Webmail:
     url = None
@@ -31,11 +28,10 @@ class Webmail:
         self.url = url
         browser = sel.createBrowser()
         #Adding cookie
-        cookieDict = {}
         for c  in cookies:
-            cookieDict.clear()
-            cookieDict[c.name] = c.value
-            browser.add_cookie(cookieDict)
+            cookie_dict = {}
+            cookie_dict[c.name] = c.value
+            browser.add_cookie(cookie_dict)
 
         #Start crawl
         browser = sel.login(browser, Config.USERNAME, Config.PASSWORD)
@@ -48,28 +44,27 @@ class Webmail:
 
     def getEmails(self, browser):
         browser.get(self.correct_url(self.url))
-        print self.url
+        logging.info("Trying to get emails")
+        logging.info("Sleeping 15 seconds ...")
         #sleep for
         time.sleep(15)
-
+        logging.info("Done sleeping 15 seconds.")
         browser.maximize_window()
-        frame = browser.find_element_by_xpath('//*[@id="idWebAccFrameset"]/frame[2]')
-        print frame.text
+        frame = browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME)
+
         browser.switch_to.frame(frame)
         a = browser.find_element_by_id("msglist").text
-
+        logging.info("Found source, parsing.")
         emails = self.parseSourceTenEmails(browser)
-
+        logging.info("Done parsing.")
         #write to db etc etc
 
     def parseSourceTenEmails(self, browser):
         source = etree.HTML(browser.page_source)
-        mail_table = '//*[@id="msglist"]/div[1]/div/table/tbody/tr[%s]'
-        email_info = '//*[@id="msglist"]/div[1]/div/table/tbody/tr[{0}]/td[{1}]/text()'
         emails = {}
         for i in range(1, 11):
             item = {}
             for y in range(3, 7):
-                item[str(y)] = regex.filterListUnicode(str(source.xpath(email_info.format(i,y))))
+                item[str(y)] = regex.filterListUnicode(str(source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i,y))))
             emails[str(i)] = item
         return emails

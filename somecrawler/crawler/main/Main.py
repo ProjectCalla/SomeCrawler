@@ -7,16 +7,15 @@ from somecrawler.crawler.config import Config
 
 class Main:
     login = Login.Login()
-    osiris = Osiris.Osiris()
+    osiris = Osiris.OsirisProducer()
     username = Config.USERNAME
     password = Config.PASSWORD
     def __init__(self):
         #Set firefox ~/.mozilla/ prefs.js
         pass
     def fullCrawl(self):
-        session = self.login.login(self.username, self.password)
-        f = session.get(Config.HINT_HOME)
-        self.osiris.start(session)
+
+        self.osiris.start()
 
         #crawls webmail
         #w = Webmail.Webmail()
