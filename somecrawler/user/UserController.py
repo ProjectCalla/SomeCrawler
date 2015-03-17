@@ -1,9 +1,9 @@
 __author__ = 'j'
+from somecrawler.config import MySqlConfig as mysqlConf
+from somecrawler.manager import MySqlManager
 from somecrawler.user import UserManager
-from somecrawler.crawler.manager import MySqlManager
-from somecrawler.crawler.config import MySqlConfig as mysqlConf
 
-class UserController:
+class UserController():
     u = UserManager.UserManager()
     userList = {}
     mysql = MySqlManager.MySqlManager()
@@ -14,7 +14,7 @@ class UserController:
         query = "SELECT * FROM {0} ;".format(mysqlConf.TABLE_USER)
         db = self.mysql.openDB()
         rows = self.mysql.executeQuery(db, query).fetchall()
-        if rows != None:
+        if rows is not None:
             i = 0
             for row in rows:
                 users[str(i)] = self.u.createUser(row[1], row[2])

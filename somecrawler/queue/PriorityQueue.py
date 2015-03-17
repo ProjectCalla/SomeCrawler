@@ -11,5 +11,9 @@ class PQueue(PriorityQueue):
         self.counter += 1
 
     def get(self, *args, **kwargs):
-        _, _, item = PriorityQueue.get(self, *args, **kwargs)
-        return item
+        if self.counter > 0:
+            _, _, item = PriorityQueue.get(self, *args, **kwargs)
+            self.counter -= 1
+            return item
+        else:
+            return None

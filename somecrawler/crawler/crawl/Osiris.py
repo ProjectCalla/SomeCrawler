@@ -1,10 +1,7 @@
 __author__ = 'j'
-
+from somecrawler.config import OsirisConfig, Config, XpathConfig as xpathConf
 from lxml import etree
-
-from somecrawler.crawler.config import Config, XpathConfig as xpathConf, OsirisConfig
-from somecrawler.crawler.controller import SeleniumController as sel, RegexController as regex
-
+from somecrawler.controller import SeleniumController as sel, RegexController as regex
 
 class OsirisProducer:
     name = OsirisConfig.CONSUMER_NAME
@@ -14,17 +11,20 @@ class OsirisProducer:
     def __init__(self):
         pass
 
-    def start(self):
-        #add and use password
-        print "Starting Osiris Consumer"
+    def startPersonalia(self):
+        print "Starting Osiris Personalia producer"
+        return self.getPersonalia(self.setup())
+
+    def startResults(self):
+        print "Starting Osiris Results producer"
+        return self.getResults(self.setup())
+
+    def setup(self):
         browser = sel.createBrowser()
         browser = sel.login(browser, Config.USERNAME, Config.PASSWORD)
-        browser.get(Config.OSIRIS_HOME)
-
-        personalia = self.getPersonalia(browser)
-        results = self.getResults(browser)
-
+        return browser
     def getPersonalia(self, browser):
+        browser.get(Config.OSIRIS_HOME)
         source = etree.HTML(browser.page_source)
         return source
 
@@ -80,23 +80,19 @@ class OsirisConsumer:
                             personalia[temp] = g[0]
         personalia['group'] = group_arr
         personalia.pop('Adres')
-        print personalia
         return personalia
-        pass
 
     def parseResults(self, source):
-        date = '//*[@id="ResultatenPerStudent"]/table/tbody/tr/td/table/tbody/tr[{0}]/td[{1}]/span/text()'
         items = {}
-
         for i in range(2, 17):
             item = {}
-            item['test_date'] = source.xpath(date.format(i, 1))[0]
-            item['course_code'] = source.xpath(date.format(i, 2))[0]
-            item['course'] = source.xpath(date.format(i, 3))[0]
-            item['exam_type'] = source.xpath(date.format(i, 4))[0]
-            item['professor'] = source.xpath(date.format(i, 5))[0]
-            item['weging'] = source.xpath(date.format(i, 6))[0]
-            item['result'] = source.xpath(date.format(i, 8))[0]
-            item['mutation_date'] = source.xpath(date.format(i, 10))[0]
+            item['test_date'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 1))[0]
+            item['course_code'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 2))[0]
+            item['course'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 3))[0]
+            item['exam_type'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 4))[0]
+            item['professor'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 5))[0]
+            item['weging'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 6))[0]
+            item['result'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 8))[0]
+            item['mutation_date'] = source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 10))[0]
             items[str(i)] = item
         return items

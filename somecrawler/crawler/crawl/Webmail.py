@@ -1,70 +1,58 @@
 __author__ = 'j'
+from somecrawler.config import Config, XpathConfig as xpathConf
+from somecrawler.controller import SeleniumController as sel, RegexController as regex
 import time
-from lxml import etree
-from selenium.webdriver.common.keys import Keys
-from somecrawler.crawler.config import Config
-from somecrawler.crawler.controller import RegexController as regex, SeleniumController as sel
 import logging
-from somecrawler.crawler.config import XpathConfig as xpathConf
 
-class Webmail:
-    url = None
+class WebmailProducer:
     def __init__(self):
         pass
 
-    def correct_url(self, url):
-     if not url.startswith("http://") and not url.startswith("https://"):
-        url = "http://" + url
-     return url
+    def start(self, cookies={}):
+        if not cookies: cookies = {}
+        mailSource = self.getEmails(self.setup(cookies))
 
-    def scrollDown(self, browser, numberOfScrollDowns):
-        body = browser.find_element_by_tag_name("body")
-        while numberOfScrollDowns >=0:
-            body.send_keys(Keys.PAGE_DOWN)
-            numberOfScrollDowns -= 1
-        return browser
-
-    def start(self, url, cookies):
-        self.url = url
+    def setup(self, cookies={}):
         browser = sel.createBrowser()
-        #Adding cookie
         for c  in cookies:
             cookie_dict = {}
             cookie_dict[c.name] = c.value
             browser.add_cookie(cookie_dict)
-
-        #Start crawl
-        browser = sel.login(browser, Config.USERNAME, Config.PASSWORD)
-        self.getEmails(browser)
-
-        #Browser scroll down -> usage: get all mails, dont forget the wait for the javascript execution
-        browser = self.scrollDown(browser, 10)
-        browser.quit()
-
+        return sel.login(browser, Config.USERNAME, Config.PASSWORD)
 
     def getEmails(self, browser):
-        browser.get(self.correct_url(self.url))
+        browser.get(self.correct_url(Config.WEBMAIL_HOME))
         logging.info("Trying to get emails")
         logging.info("Sleeping 15 seconds ...")
         #sleep for
         time.sleep(15)
         logging.info("Done sleeping 15 seconds.")
         browser.maximize_window()
-        frame = browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME)
-
-        browser.switch_to.frame(frame)
+        browser.switch_to.frame(browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME))
+        #not sure what `a = bla bla` does
         a = browser.find_element_by_id("msglist").text
-        logging.info("Found source, parsing.")
-        emails = self.parseSourceTenEmails(browser)
-        logging.info("Done parsing.")
-        #write to db etc etc
+        return browser.page_source
 
-    def parseSourceTenEmails(self, browser):
-        source = etree.HTML(browser.page_source)
+    def correct_url(self, url):
+     if not url.startswith("http://") and not url.startswith("https://"):
+        url = "http://" + url
+     return url
+
+
+class WebmailConsumer:
+    webmail_source = None
+
+    def __init__(self, webmail_source):
+        self.webmail_source = webmail_source
+
+    def start(self):
+        emails = self.parseEmails()
+
+    def parseEmails(self, amount=10):
         emails = {}
-        for i in range(1, 11):
+        for i in range(1, amount+1):
             item = {}
             for y in range(3, 7):
-                item[str(y)] = regex.filterListUnicode(str(source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i,y))))
+                item[str(y)] = regex.filterListUnicode(str(self.webmail_source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i,y))))
             emails[str(i)] = item
         return emails

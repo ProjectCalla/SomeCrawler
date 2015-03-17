@@ -1,5 +1,6 @@
 __author__ = 'j'
-class User:
+
+class User():
     username = None
     password = None
     priority = None

@@ -2,7 +2,7 @@ __author__ = 'j'
 
 import hashlib
 
-class CryptManager:
+class CryptManager():
    #need some encryption method, two way
     def __init__(self):
         pass

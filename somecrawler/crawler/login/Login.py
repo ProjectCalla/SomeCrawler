@@ -1,14 +1,12 @@
+from somecrawler.config import Config
+
 __author__ = 'j'
 
 import requests
 from lxml import etree
 
-from somecrawler.crawler.controller import RegexController as regex
-from somecrawler.crawler.config import Config
-
 
 class Login:
-
     def __init__(self):
         pass
 
