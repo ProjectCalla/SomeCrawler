@@ -1,0 +1,61 @@
+__author__ = 'j'
+from somecrawler.config import OsirisConfig, Config, XpathConfig as xpathConf
+from lxml import etree
+from somecrawler.controller import SeleniumController as sel, RegexController as regex
+
+class OsirisPersonaliaProducer:
+    #TODO clean up and use some hierarchy
+    name = OsirisConfig.CONSUMER_NAME
+    user = None
+    def __init__(self, user):
+        self.user = user
+
+    def startPersonalia(self):
+        print "Starting Osiris Personalia producer"
+        return self.getPersonalia(self.setup())
+
+    def setup(self):
+        browser = sel.createBrowser()
+        browser = sel.login(browser, self.user.username, self.user.password)
+        return browser
+
+    def getPersonalia(self, browser):
+        browser.get(Config.OSIRIS_HOME)
+        source = etree.HTML(browser.page_source)
+        return source
+
+class OsirisPersonaliaConsumer:
+    name = OsirisConfig.PRODUCER_NAME
+    source = None
+    user = None
+    def __init__(self, user, source):
+        self.sources = source
+        self.user = user
+
+    def start(self):
+
+        pass
+
+    def parsePersonlia(self, source):
+        personalia = {}
+        group_arr = []
+        temp = None
+        for i in range(1, 23):
+            for x in range(1,3):
+                if i == 9 and x == 2:
+                    for z in range(1, 10):
+                        g = source.xpath(xpathConf.OSIRIS_PERSONALIA_GROUP.format(z))
+                        if len(g) > 0:
+                            group_arr.append(g[0])
+                else:
+                    g = source.xpath(xpathConf.OSIRIS_PERSONALIA_MAIN.format(i, x))
+                    if len(g) > 0:
+                        if x == 1:
+                            temp = g[0]
+                        else:
+                            personalia[temp] = g[0]
+        personalia['group'] = group_arr
+        personalia.pop('Adres')
+        return personalia
+
+

@@ -5,8 +5,9 @@ import time
 import logging
 
 class WebmailProducer:
-    def __init__(self):
-        pass
+    user = None
+    def __init__(self, user):
+        self.user = user
 
     def start(self, cookies={}):
         if not cookies: cookies = {}

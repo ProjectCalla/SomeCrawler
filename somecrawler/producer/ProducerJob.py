@@ -1,5 +1,5 @@
 __author__ = 'j'
-from somecrawler.crawler.crawl import Webmail, Osiris, AnnouncementsPhaseOne
+from somecrawler.crawler.crawl import Webmail, OsirisPersonalia, AnnouncementsPhaseOne
 
 class ProducerJob:
     job_webmail = None
@@ -9,10 +9,13 @@ class ProducerJob:
     job_mededelingen_phase_one = None
     job_mededelingen_phase_two = None
     start_job = False
+
+    user = None
     #Create jobs from this?
-    def __init__(self, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=True,
+    def __init__(self, user, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=True,
                  mededelingen_phase_one=False, mededelingen_phase_two=True):
     #On default doesn't crawl the Personalia and Mededelingen Phase one
+        self.user = user
         self.job_mededelingen_phase_one = mededelingen_phase_one
         self.job_mededelingen_phase_two = mededelingen_phase_two
         self.job_osiris_personalia = osiris_personalia
@@ -24,9 +27,9 @@ class ProducerJob:
         if self.job_webmail:
             Webmail.WebmailProducer().start()
         if self.job_osiris_personalia:
-            personalia = Osiris.OsirisProducer().startPersonalia()
+            personalia = OsirisPersonalia.OsirisProducer().startPersonalia()
         if self.job_osiris_results:
-            results = Osiris.OsirisProducer().startResults()
+            results = OsirisPersonalia.OsirisProducer().startResults()
         if self.job_osiris_credits:
             #?
             pass

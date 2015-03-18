@@ -1,6 +1,4 @@
 __author__ = 'j'
-class Main:
+class ThreadController():
     def __init__(self):
-        pass
-    def start(self):
         pass
