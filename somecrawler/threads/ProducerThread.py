@@ -6,7 +6,7 @@ from somecrawler.threads.BaseThread import BaseThread
 
 class ProducerThread(BaseThread):
 
-    def start(self):
+    def run(self):
         #check if done
         #done? pull new job out of queue
         #start job
@@ -25,8 +25,8 @@ class ProducerThread(BaseThread):
             self.execute_job()
 
     def execute_job(self):
+        print "starting: " + self.job.
         self.job.start()
-        self.join()
         print "Done"
 
 

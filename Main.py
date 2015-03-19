@@ -24,6 +24,7 @@ class TestMain:
         #set consumer threads
         #Done
 
+        ##!!Producer only!!
         jobs = JobController.create_producer_jobs_from_db()
         for i in range(len(jobs)):
             self.sharedMem.qManager.add_to_queue(self.sharedMem.pQueue, jobs[i], jobs[i].priority)

@@ -11,7 +11,6 @@ class BaseJob():
     job_announcements_phase_one = None
     job_announcements_phase_two = None
 
-
     user = None
     priority = None
 

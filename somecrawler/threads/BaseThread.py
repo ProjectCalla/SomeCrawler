@@ -11,7 +11,7 @@ class BaseThread(threading.Thread):
         threading.Thread.__init__(self)
         self.sharedMem = SharedMemory()
 
-    def start(self):
+    def run(self):
         raise Exception("Unimplemented abstract method: start()")
         #check queue
         #get Job
