@@ -4,6 +4,8 @@ from somecrawler.controller import SeleniumController as sel, RegexController as
 import time
 import logging
 from somecrawler.crawler.crawl import Base
+from selenium.webdriver.common.alert import Alert
+
 class WebmailProducer(Base.BaseProducer):
     user = None
     def __init__(self, user):
@@ -12,7 +14,7 @@ class WebmailProducer(Base.BaseProducer):
 
     def start(self, cookies={}):
         if not cookies: cookies = {}
-        mailSource = self.getEmails(self.setup(cookies))
+        return self.getEmails(self.setup(cookies))
 
     def setup(self, cookies={}):
         browser = sel.createBrowser()
@@ -20,7 +22,7 @@ class WebmailProducer(Base.BaseProducer):
             cookie_dict = {}
             cookie_dict[c.name] = c.value
             browser.add_cookie(cookie_dict)
-        return sel.login(browser, Config.USERNAME, Config.PASSWORD)
+        return sel.login(browser, self.user.username, self.user.password)
 
     def getEmails(self, browser):
         browser.get(self.correct_url(Config.WEBMAIL_HOME))
@@ -28,11 +30,19 @@ class WebmailProducer(Base.BaseProducer):
         logging.info("Sleeping 15 seconds ...")
         #sleep for
         time.sleep(15)
+
+        #Alerts
+        try:
+            Alert(browser).accept()
+            logging.info("Alert found on page.. Trying to accept alert.")
+        except:
+            pass
         logging.info("Done sleeping 15 seconds.")
         browser.maximize_window()
         browser.switch_to.frame(browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME))
         #not sure what `a = bla bla` does
-        a = browser.find_element_by_id("msglist").text
+        #browser.find_element_by_id("msglist").text     #old
+
         return browser.page_source
 
     def correct_url(self, url):

@@ -6,8 +6,10 @@ from somecrawler.controller import SeleniumController as sel, RegexController as
 from somecrawler.crawler.crawl import Base
 class AnnouncementsPhaseOneProducer(Base.BaseProducer):
     #First phase crawler
-    def __init__(self):
+    user = None
+    def __init__(self, user):
         Base.BaseProducer.__init__(self)
+        self.user = user
 
     def start(self):
         browser = self.setup()
@@ -18,7 +20,7 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
 
     def setup(self):
         browser = sel.createBrowser()
-        return sel.login(browser, Config.USERNAME, Config.PASSWORD)
+        return sel.login(browser, self.user.username, self.user.password)
 
 
 class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):

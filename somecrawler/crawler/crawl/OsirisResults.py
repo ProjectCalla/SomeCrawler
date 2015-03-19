@@ -24,8 +24,7 @@ class OsirisResultsProducer(Base.BaseProducer):
 
     def getResults(self, browser):
         browser.get(Config.OSIRIS_RESULTS)
-        source = etree.HTML(browser.page_source)
-        return source
+        return browser.page_source
 
 
 

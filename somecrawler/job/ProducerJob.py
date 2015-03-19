@@ -7,19 +7,23 @@ import time
 class ProducerJob(BaseJob):
 
     def webmail(self, user):
-        Webmail.WebmailProducer(self.user).start()
+        print Webmail.WebmailProducer(self.user).start()
+        print "="*10+"\n"
 
     def osiris_results(self, user):
-        OsirisResults.OsirisResultsProducer(self.user).start()
+        print OsirisResults.OsirisResultsProducer(self.user).start()
+        print "="*10+"\n"
 
     def osiris_personalia(self, user):
-        OsirisPersonalia.OsirisPersonaliaProducer(self.user).start()
+        print OsirisPersonalia.OsirisPersonaliaProducer(self.user).start()
+        print "="*10+"\n"
 
     def osiris_credits(self, user):
         pass
 
     def announcements_phase_one(self, user):
-        AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer().start()
+        print AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user).start()
+        print "="*10+"\n"
 
     def announcements_phase_two(self, user):
         pass

@@ -26,9 +26,15 @@ class TestMain:
     def test(self):
         a = BaseThread.BaseThread()
         a.start()
+    def testJob(self):
+        u = User.User("user", "password")
+        job = ProducerJob.ProducerJob(u, webmail=True, osiris_personalia=True, osiris_results=True, osiris_credits=False,
+                 announcements_phase_one=True, announcements_phase_two=False)
+        job.start()
+        pass
 
 
 if __name__ == "__main__":
     #TestMain().start()
-    TestMain().test()
+    TestMain().testJob()
     #TestMain().test2()

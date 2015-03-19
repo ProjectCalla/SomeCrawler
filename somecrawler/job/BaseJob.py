@@ -13,8 +13,8 @@ class BaseJob():
     user = None
     priority = None
 
-    def __init__(self, user, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=True,
-                 announcements_phase_one=False, announcements_phase_two=True):
+    def __init__(self, user, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=False,
+                 announcements_phase_one=False, announcements_phase_two=False):
         #General
         self.user = user
         self.priority = user.priority
