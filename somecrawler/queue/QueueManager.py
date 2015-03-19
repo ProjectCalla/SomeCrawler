@@ -8,8 +8,9 @@ class QueueManager:
 
     def __init__(self):
         pass
-    def add_to_queue(self, pQueue, user):
-        pQueue.put(user, user.priority)
+
+    def add_to_queue(self, pQueue, job, priority):
+        pQueue.put(job, priority)
 
     def create_user_priority_queue(self, pQueue):
         userList = self.userCon.getAllUsers()

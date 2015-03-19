@@ -2,12 +2,15 @@ __author__ = 'j'
 from somecrawler.config import OsirisConfig, Config, XpathConfig as xpathConf
 from lxml import etree
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
+from somecrawler.crawler.crawl import Base
 
-class OsirisResultsProducer:
+class OsirisResultsProducer(Base.BaseProducer):
     #TODO clean up and use some hierarchy
     name = OsirisConfig.CONSUMER_NAME
     user = None
+
     def __init__(self, user):
+        Base.BaseProducer.__init__(self)
         self.user = user
 
     def start(self):
@@ -26,11 +29,12 @@ class OsirisResultsProducer:
 
 
 
-class OsirisResultsConsumer:
+class OsirisResultsConsumer(Base.BaseConsumer):
     name = OsirisConfig.PRODUCER_NAME
     source = None
     user = None
     def __init__(self, user, source):
+        Base.BaseConsumer.__init__(self)
         self.sources = source
         self.user = user
 
@@ -38,7 +42,7 @@ class OsirisResultsConsumer:
         #TODO fix this
         pass
 
-    def parseResults(self, source):
+    def parse(self, source):
         items = {}
         for i in range(2, 17):
             item = {}

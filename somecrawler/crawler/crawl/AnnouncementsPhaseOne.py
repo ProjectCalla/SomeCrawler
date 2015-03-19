@@ -3,9 +3,12 @@ from somecrawler.config import Config, XpathConfig
 import time
 from lxml import etree
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
-
-class AnnouncementsPhaseOneProducer():
+from somecrawler.crawler.crawl import Base
+class AnnouncementsPhaseOneProducer(Base.BaseProducer):
     #First phase crawler
+    def __init__(self):
+        Base.BaseProducer.__init__(self)
+
     def start(self):
         browser = self.setup()
         browser.get(Config.HINT_HOME)
@@ -18,19 +21,20 @@ class AnnouncementsPhaseOneProducer():
         return sel.login(browser, Config.USERNAME, Config.PASSWORD)
 
 
-class AnnouncementsPhaseOneConsumer():
+class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):
     source = None
     med_code = Config.MEDEDELINGEN_PHASE_ONE_CODES
     def __init__(self, source):
+        Base.BaseConsumer.__init__(self)
         self.source = source
 
     def start(self):
         announcements = {}
         for k,v in self.med_code.items():
-            announcements[str(k)] = self.parseAnnouncements(self.source, str(v)) #ISO has problems
+            announcements[str(k)] = self.parse(self.source, str(v)) #ISO has problems
         print announcements
 
-    def parseAnnouncements(self, html, wid_id):
+    def parse(self, html, wid_id):
         med = {}
         source = etree.HTML(html)
         med['title'] = regex.mededelingenTitle(str(source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_HEADER.format(wid_id))))

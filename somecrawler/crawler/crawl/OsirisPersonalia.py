@@ -2,15 +2,18 @@ __author__ = 'j'
 from somecrawler.config import OsirisConfig, Config, XpathConfig as xpathConf
 from lxml import etree
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
+from somecrawler.crawler.crawl import Base
 
-class OsirisPersonaliaProducer:
+class OsirisPersonaliaProducer(Base.BaseConsumer):
     #TODO clean up and use some hierarchy
     name = OsirisConfig.CONSUMER_NAME
     user = None
+
     def __init__(self, user):
+        Base.BaseConsumer.__init__(self)
         self.user = user
 
-    def startPersonalia(self):
+    def start(self):
         print "Starting Osiris Personalia producer"
         return self.getPersonalia(self.setup())
 
@@ -24,19 +27,20 @@ class OsirisPersonaliaProducer:
         source = etree.HTML(browser.page_source)
         return source
 
-class OsirisPersonaliaConsumer:
+class OsirisPersonaliaConsumer(Base.BaseProducer):
     name = OsirisConfig.PRODUCER_NAME
     source = None
     user = None
+
     def __init__(self, user, source):
+        Base.BaseProducer.__init__(self)
         self.sources = source
         self.user = user
 
     def start(self):
+        print "start"
 
-        pass
-
-    def parsePersonlia(self, source):
+    def parse(self, source):
         personalia = {}
         group_arr = []
         temp = None

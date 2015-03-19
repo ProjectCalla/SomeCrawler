@@ -3,10 +3,11 @@ from somecrawler.config import Config, XpathConfig as xpathConf
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
 import time
 import logging
-
-class WebmailProducer:
+from somecrawler.crawler.crawl import Base
+class WebmailProducer(Base.BaseProducer):
     user = None
     def __init__(self, user):
+        Base.BaseProducer.__init__(self)
         self.user = user
 
     def start(self, cookies={}):
@@ -40,16 +41,17 @@ class WebmailProducer:
      return url
 
 
-class WebmailConsumer:
+class WebmailConsumer(Base.BaseConsumer):
     webmail_source = None
 
     def __init__(self, webmail_source):
+        Base.BaseConsumer.__init__(self)
         self.webmail_source = webmail_source
 
     def start(self):
-        emails = self.parseEmails()
+        emails = self.parse()
 
-    def parseEmails(self, amount=10):
+    def parse(self, amount=10):
         emails = {}
         for i in range(1, amount+1):
             item = {}

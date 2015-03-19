@@ -1,7 +1,11 @@
 __author__ = 'j'
 from somecrawler.memory import SharedMemory
 from somecrawler.queue import QueueManager
-
+from somecrawler.job import ConsumerJob, ProducerJob
+from somecrawler.user import User
+import thread
+from somecrawler.exp import SomeThread
+from somecrawler.threads import BaseThread
 class TestMain:
     queue = QueueManager.QueueManager()
     def __init__(self):
@@ -19,9 +23,12 @@ class TestMain:
 
 
         pass
-
-
+    def test(self):
+        a = BaseThread.BaseThread()
+        a.start()
 
 
 if __name__ == "__main__":
-    TestMain().start()
+    #TestMain().start()
+    TestMain().test()
+    #TestMain().test2()
