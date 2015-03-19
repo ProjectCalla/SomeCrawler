@@ -1,5 +1,5 @@
 __author__ = 'j'
-from somecrawler.config import Config
+from somecrawler.config import LinkConfig
 import time
 from selenium import webdriver
 from pyvirtualdisplay import Display
@@ -8,7 +8,7 @@ import logging, os
 
 def login(browser, username, password):
     logging.info("Logging in ...")
-    browser.get(Config.HINT_HOME)
+    browser.get(LinkConfig.HINT_HOME)
     #fill in form
     browser.find_element_by_id("username").send_keys(username)
     browser.find_element_by_id("password").send_keys(password)

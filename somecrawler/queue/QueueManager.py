@@ -3,7 +3,7 @@ from somecrawler.queue import PriorityQueue
 from somecrawler.user import User, UserController
 
 class QueueManager:
-    #pQueue = PriorityQueue.PQueue()
+    pQueue = PriorityQueue.PQueue()
     userCon = UserController.UserController()
 
     def __init__(self):
@@ -18,8 +18,8 @@ class QueueManager:
 
     def add_dict_to_queue(self, pQueue, dict):
         for i in range(len(dict)):
-            user = dict[str(i)]
-            pQueue.put(user, user.priority)
+            job = dict[str(i)]
+            pQueue.put(job, job.priority)
         return pQueue
 
     def emptyQueueDEBUG(self, pQueue):

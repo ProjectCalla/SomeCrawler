@@ -1,14 +1,16 @@
 __author__ = 'j'
-
+from somecrawler.memory import SharedObject
 
 class BaseJob():
     #To add an job at its var below, add it to the init and define own function
+    thread_name = "BaseJob"
     job_webmail = None
     job_osiris_personalia = None
     job_osiris_results = None
     job_osiris_credits = None
     job_announcements_phase_one = None
     job_announcements_phase_two = None
+
 
     user = None
     priority = None
@@ -28,17 +30,17 @@ class BaseJob():
 
     def start(self):
         if self.job_webmail:
-            self.webmail(self.user)
+            self.webmail_source = self.webmail(self.user)
         if self.job_osiris_personalia:
-            self.osiris_personalia(self.user)
+            self.osiris_personalia_source = self.osiris_personalia(self.user)
         if self.job_osiris_results:
-            self.osiris_results(self.user)
+            self.osiris_results_source = self.osiris_results(self.user)
         if self.job_osiris_credits:
-            self.osiris_credits(self.user)
+            self.osiris_credits_source = self.osiris_credits(self.user)
         if self.job_announcements_phase_one:
-            self.announcements_phase_one(self.user)
+            self.announcements_phase_one_source = self.announcements_phase_one(self.user)
         if self.job_announcements_phase_two:
-            self.announcements_phase_two(self.user)
+            self.announcements_phase_two_source = self.announcements_phase_two(self.user)
 
     def webmail(self, user):
         raise Exception("Unimplemented abstract method: webmail()")

@@ -1,5 +1,5 @@
 __author__ = 'j'
-from somecrawler.config import OsirisConfig, Config, XpathConfig as xpathConf
+from somecrawler.config import OsirisConfig, LinkConfig, XpathConfig as xpathConf
 from lxml import etree
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
 from somecrawler.crawler.crawl import Base
@@ -23,7 +23,7 @@ class OsirisPersonaliaProducer(Base.BaseConsumer):
         return browser
 
     def getPersonalia(self, browser):
-        browser.get(Config.OSIRIS_HOME)
+        browser.get(LinkConfig.OSIRIS_HOME)
         return browser.page_source
 
 class OsirisPersonaliaConsumer(Base.BaseProducer):

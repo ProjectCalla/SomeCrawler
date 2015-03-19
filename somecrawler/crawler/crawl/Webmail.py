@@ -1,5 +1,5 @@
 __author__ = 'j'
-from somecrawler.config import Config, XpathConfig as xpathConf
+from somecrawler.config import LinkConfig, XpathConfig as xpathConf
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
 import time
 import logging
@@ -25,7 +25,7 @@ class WebmailProducer(Base.BaseProducer):
         return sel.login(browser, self.user.username, self.user.password)
 
     def getEmails(self, browser):
-        browser.get(self.correct_url(Config.WEBMAIL_HOME))
+        browser.get(self.correct_url(LinkConfig.WEBMAIL_HOME))
         logging.info("Trying to get emails")
         logging.info("Sleeping 15 seconds ...")
         #sleep for

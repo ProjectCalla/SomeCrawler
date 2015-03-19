@@ -10,14 +10,14 @@ class UserController():
     def __init__(self):
         pass
     def getAllUsers(self):
-        users = {}
+        users = []
         query = "SELECT * FROM {0} ;".format(mysqlConf.TABLE_USER)
         db = self.mysql.openDB()
         rows = self.mysql.executeQuery(db, query).fetchall()
         if rows is not None:
             i = 0
             for row in rows:
-                users[str(i)] = self.u.createUser(row[1], row[2])
+                users.append(self.u.createUser(row[1], row[2]))
                 i+=1
         self.mysql.closeDB(db)
         return users

@@ -1,4 +1,4 @@
-from somecrawler.config import Config
+from somecrawler.config import LinkConfig
 
 __author__ = 'j'
 
@@ -17,7 +17,7 @@ class Login:
         payload = {"username" : username, "password" : password}
 
         #First get login info
-        req = session.get(Config.HINT_HOME)
+        req = session.get(LinkConfig.HINT_HOME)
         source = etree.HTML(req.text)
         #adds the payload that is generated to log in
 
@@ -26,5 +26,5 @@ class Login:
         payload[regex.filterListUnicode(str(source.xpath('//*[@id="formwrap"]/form/div/input[3]/@value')))] = regex.filterListUnicode(str(source.xpath('//*[@id="formwrap"]/form/div/input[3]/@value')))
 
         #login
-        session.post(Config.HINT_LOGIN, data=payload)
+        session.post(LinkConfig.HINT_LOGIN, data=payload)
         return session

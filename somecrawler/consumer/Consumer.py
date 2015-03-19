@@ -1,4 +1,5 @@
 __author__ = 'j'
+
 class Consumer():
     queue = None        #Has to be static
     threads = []

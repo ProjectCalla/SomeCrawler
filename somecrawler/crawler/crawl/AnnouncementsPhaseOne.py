@@ -1,5 +1,5 @@
 __author__ = 'j'
-from somecrawler.config import Config, XpathConfig
+from somecrawler.config import LinkConfig, XpathConfig
 import time
 from lxml import etree
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
@@ -13,7 +13,7 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
 
     def start(self):
         browser = self.setup()
-        browser.get(Config.HINT_HOME)
+        browser.get(LinkConfig.HINT_HOME)
         time.sleep(15)   #Sleep to wait till the Mededelingen loads
         #TODO check if loading exists
         return browser.page_source
@@ -25,7 +25,7 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
 
 class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):
     source = None
-    med_code = Config.MEDEDELINGEN_PHASE_ONE_CODES
+    med_code = LinkConfig.MEDEDELINGEN_PHASE_ONE_CODES
     def __init__(self, source):
         Base.BaseConsumer.__init__(self)
         self.source = source
