@@ -7,22 +7,23 @@ from somecrawler.memory.SharedObject import SharedObject
 
 class ProducerJob(BaseJob):
 
-    def webmail(self, user):
-        return Webmail.WebmailProducer(self.user).start()
+    def webmail(self, user, browser):
+        print "Starting webmail"
+        return Webmail.WebmailProducer(self.user, browser).start()
 
-    def osiris_results(self, user):
-        return OsirisResults.OsirisResultsProducer(self.user).start()
-
-    def osiris_personalia(self, user):
-        return OsirisPersonalia.OsirisPersonaliaProducer(self.user).start()
-
-    def osiris_credits(self, user):
+    def osiris_results(self, user, browser):
+        #return OsirisResults.OsirisResultsProducer(self.user, browser).start()
+        pass
+    def osiris_personalia(self, user, browser):
+        #return OsirisPersonalia.OsirisPersonaliaProducer(self.user, browser).start()
+        pass
+    def osiris_credits(self, user, browser):
         pass
 
-    def announcements_phase_one(self, user):
-        return AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user).start()
-
-    def announcements_phase_two(self, user):
+    def announcements_phase_one(self, user, browser):
+        #return AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user, browser).start()
+        pass
+    def announcements_phase_two(self, user, browser):
         pass
 
     def add_to_shared_memory(self):

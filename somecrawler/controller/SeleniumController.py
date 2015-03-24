@@ -7,6 +7,7 @@ from sys import platform as _platform
 import logging, os
 
 def login(browser, username, password):
+    print "[SELENIUM_CONTROLLER] Logging in..."
     logging.info("Logging in ...")
     browser.get(LinkConfig.HINT_HOME)
     #fill in form
@@ -18,6 +19,7 @@ def login(browser, username, password):
     return browser
 
 def createBrowser():
+    print "[SELENIUM_CONTROLLER] Creating browser...."
     logging.info("Creating Virtual WebDriver.")
     display = Display(visible=0, size=(1024, 768))
     display.start()
@@ -25,7 +27,7 @@ def createBrowser():
     browser = webdriver.Firefox(setBrowserSettings())
     return browser
 
-def closeBrowserFirefox(browser):
+def closeBrowserFirefox1(browser):
     logging.info("Closing webdriver and killing firefox process.")
     browser.close()
 

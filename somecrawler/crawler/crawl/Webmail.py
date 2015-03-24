@@ -8,21 +8,15 @@ from selenium.webdriver.common.alert import Alert
 
 class WebmailProducer(Base.BaseProducer):
     user = None
-    def __init__(self, user):
+    browser = None
+    def __init__(self, user, browser):
         Base.BaseProducer.__init__(self)
         self.user = user
+        self.browser = browser
 
     def start(self, cookies={}):
         if not cookies: cookies = {}
-        return self.getEmails(self.setup(cookies))
-
-    def setup(self, cookies={}):
-        browser = sel.createBrowser()
-        for c  in cookies:
-            cookie_dict = {}
-            cookie_dict[c.name] = c.value
-            browser.add_cookie(cookie_dict)
-        return sel.login(browser, self.user.username, self.user.password)
+        return self.getEmails(self.browser)
 
     def getEmails(self, browser):
         browser.get(self.correct_url(LinkConfig.WEBMAIL_HOME))
@@ -40,15 +34,16 @@ class WebmailProducer(Base.BaseProducer):
         logging.info("Done sleeping 15 seconds.")
         browser.maximize_window()
         browser.switch_to.frame(browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME))
-        #not sure what `a = bla bla` does
-        #browser.find_element_by_id("msglist").text     #old
 
-        return browser.page_source
+        #browser.find_element_by_id("msglist").text     #old
+        source = browser.page_source
+        browser.close()
+        return source
 
     def correct_url(self, url):
-     if not url.startswith("http://") and not url.startswith("https://"):
-        url = "http://" + url
-     return url
+        if not url.startswith("http://") and not url.startswith("https://"):
+            url = "http://" + url
+        return url
 
 
 class WebmailConsumer(Base.BaseConsumer):

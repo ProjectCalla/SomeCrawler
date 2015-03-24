@@ -14,18 +14,32 @@ class ProducerThread(BaseThread):
         self.initialize()
 
     def initialize(self):
+        index  = 0
         while 1:
+            if index == 10:
+                break
             while 1:
                 try:
-                    self.job = self.sharedMem.pQueue.get()
-                    #Synchronize
-                    break
+                    if self.sharedMem.pQueue.counter != 0:
+                        self.job = self.sharedMem.pQueue.get()
+                        #Synchronize
+                        break
+                    else:
+                        int("goto except")
                 except:
+                    print "[PRODUCER_THREAD] self.sharedMem.pQueue.counter = %s" % self.sharedMem.pQueue.counter
+                    if index == 10:
+                        print index
+                        break
                     time.sleep(1)
-            self.execute_job()
+
+                    index += 1
+            if self.job != None:
+                self.execute_job()
+        print "Donejob"
 
     def execute_job(self):
-        print "starting: " + self.job.
+        #lock_object = self.l
         self.job.start()
         print "Done"
 

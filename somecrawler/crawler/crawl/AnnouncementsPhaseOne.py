@@ -16,7 +16,9 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
         browser.get(LinkConfig.HINT_HOME)
         time.sleep(15)   #Sleep to wait till the Mededelingen loads
         #TODO check if loading exists
-        return browser.page_source
+        source = browser.page_source
+        browser.close()
+        return source
 
     def setup(self):
         browser = sel.createBrowser()

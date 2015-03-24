@@ -8,14 +8,16 @@ class OsirisResultsProducer(Base.BaseProducer):
     #TODO clean up and use some hierarchy
     name = OsirisConfig.CONSUMER_NAME
     user = None
+    browser = None
 
-    def __init__(self, user):
+    def __init__(self, user, browser):
         Base.BaseProducer.__init__(self)
         self.user = user
+        self.browser = browser
 
     def start(self):
         print "Starting Osiris Results producer"
-        return self.getResults(self.setup())
+        return self.getResults(self.browser)
 
     def setup(self):
         browser = sel.createBrowser()
@@ -24,8 +26,9 @@ class OsirisResultsProducer(Base.BaseProducer):
 
     def getResults(self, browser):
         browser.get(LinkConfig.OSIRIS_RESULTS)
-        return browser.page_source
-
+        source = browser.page_source
+        browser.close()
+        return source
 
 
 class OsirisResultsConsumer(Base.BaseConsumer):

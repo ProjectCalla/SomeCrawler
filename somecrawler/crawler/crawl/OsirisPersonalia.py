@@ -24,7 +24,9 @@ class OsirisPersonaliaProducer(Base.BaseConsumer):
 
     def getPersonalia(self, browser):
         browser.get(LinkConfig.OSIRIS_HOME)
-        return browser.page_source
+        source = browser.page_source
+        browser.close()
+        return source
 
 class OsirisPersonaliaConsumer(Base.BaseProducer):
     name = OsirisConfig.PRODUCER_NAME

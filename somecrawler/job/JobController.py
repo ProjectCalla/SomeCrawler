@@ -5,6 +5,7 @@ from somecrawler.user import UserController, User
 def create_producer_jobs_from_db():
     jobs = []
     users = UserController.UserController().getAllUsers()
+    print users
     for i in range(len(users)):
         jobs.append(ProducerJob.ProducerJob(users[i]))
     return jobs
