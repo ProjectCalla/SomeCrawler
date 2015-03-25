@@ -33,7 +33,6 @@ class BaseJob():
 
     def start(self):
         self.browser = sel.login(sel.createBrowser(), self.user.username, self.user.password)
-
         if self.job_webmail:
             self.webmail_source = self.webmail(self.user, self.browser)
         if self.job_osiris_personalia:
@@ -46,7 +45,7 @@ class BaseJob():
             self.announcements_phase_one_source = self.announcements_phase_one(self.user, self.browser)
         if self.job_announcements_phase_two:
             self.announcements_phase_two_source = self.announcements_phase_two(self.user, self.browser)
-
+        self.browser.close()
 
     def webmail(self, user, browser):
         raise Exception("Unimplemented abstract method: webmail()")

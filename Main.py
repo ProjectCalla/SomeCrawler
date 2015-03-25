@@ -33,7 +33,7 @@ class TestMain:
         for i in range(len(jobs)):
             self.shared_mem_producer.qManager.add_to_queue(self.shared_mem_producer.pQueue, jobs[i], jobs[i].priority)
 
-        producer_threads = 10
+        producer_threads = 2
         thread_con = ThreadController.ThreadController()
         thread_con.spawn_producer_threads(producer_threads)
         for i in range(producer_threads):

@@ -22,7 +22,6 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
         time.sleep(15)   #Sleep to wait till the Mededelingen loads
         #TODO check if loading exists
         source = browser.page_source
-        browser.close()
         return source
 
 class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):

@@ -21,10 +21,7 @@ class OsirisResultsProducer(Base.BaseProducer):
 
     def getResults(self, browser):
         browser.get(LinkConfig.OSIRIS_RESULTS)
-        source = browser.page_source
-        browser.close()
-        return source
-
+        return browser.page_source
 
 class OsirisResultsConsumer(Base.BaseConsumer):
     name = OsirisConfig.PRODUCER_NAME

@@ -23,8 +23,7 @@ class ProducerJob(BaseJob):
         self.webmail_source = Webmail.WebmailProducer(self.user, browser).start()
 
     def osiris_results(self, user, browser):
-        pass
-        #self.osiris_results_source = OsirisResults.OsirisResultsProducer(self.user, browser).start()
+        self.osiris_results_source = OsirisResults.OsirisResultsProducer(self.user, browser).start()
 
     def osiris_personalia(self, user, browser):
         self.osiris_personalia_source = OsirisPersonalia.OsirisPersonaliaProducer(self.user, browser).start()
@@ -43,4 +42,4 @@ class ProducerJob(BaseJob):
     def package_resources(self):
         so = SharedObject(self.user, self.webmail_source, self.osiris_results_source, self.osiris_credits_source,
             self.osiris_personalia_source, self.announcements_phase_one_source, self.announcements_phase_two_source)
-
+        print so
