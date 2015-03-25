@@ -19,4 +19,4 @@ MEDEDELINGEN_API = "http://hint.hro.nl/xsp/MededelingenOnline/index.xsp?departme
 MEDEDELINGEN_PHASE_ONE_CODES = {"wdk_wid_id": "wid_1376787", "rmu_wid_id": "wid_1376786", "rbs_wid_id": "wid_1376785",
     "cmi_wid_id": "wid_980848", "rac_wid_id": "wid_1376784", "ivl_wid_id": "wid_1376783", "ifm_wid_id": "wid_1376779",
     "com_wid_id": "wid_1376776","eas_wid_id": "wid_1376777", "ibk_wid_id": "wid_1376778", "ivg_wid_id": "wid_1376782",
-    "igo_wid_id": "wid_1376780", "iso_wid_id": "wid_1376781" }
+    "igo_wid_id": "wid_1376780", "iso_wid_id": "wid_1376781"}

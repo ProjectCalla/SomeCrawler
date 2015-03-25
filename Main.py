@@ -1,6 +1,6 @@
 __author__ = 'j'
 
-from somecrawler.memory.SharedMemory import SharedMemory
+from somecrawler.memory import SharedMemoryManager
 from somecrawler.queue import QueueManager
 from somecrawler.job import ConsumerJob, ProducerJob, JobController
 from somecrawler.user import User
@@ -11,7 +11,9 @@ from somecrawler.queue import QueueManager
 import yappi
 
 class TestMain:
-    sharedMem = SharedMemory
+    shared_mem_producer = SharedMemoryManager.producer
+    shared_mem_consumer = SharedMemoryManager.consumer
+
     def __init__(self):
         pass
     def printUser(self, user):
@@ -25,25 +27,21 @@ class TestMain:
         #set consumer threads
         #Done
         yappi.start()
-        ##!!Producer only!!
+#//===================   Producer
         print "creating queue, may take a while..."
         jobs = JobController.create_producer_jobs_from_db()
         for i in range(len(jobs)):
-            self.sharedMem.qManager.add_to_queue(self.sharedMem.pQueue, jobs[i], jobs[i].priority)
+            self.shared_mem_producer.qManager.add_to_queue(self.shared_mem_producer.pQueue, jobs[i], jobs[i].priority)
 
-        threads = 10
-        threadCon = ThreadController.ThreadController()
-        threadCon.spawn_producer_threads(threads)
-        for i in range(threads):
-            #threadCon.producer_threads[i].daemon = True
-            threadCon.producer_threads[i].start()
+        producer_threads = 10
+        thread_con = ThreadController.ThreadController()
+        thread_con.spawn_producer_threads(producer_threads)
+        for i in range(producer_threads):
+            thread_con.producer_threads[i].start()
 
-        # while self.sharedMem.pQueue.counter != 0:
-        #     "Sleeping ZzZz.."
-        #     time.sleep(1)
-
-        for i in range(threads):
-            threadCon.producer_threads[i].join()
+        for i in range(producer_threads):
+            thread_con.producer_threads[i].join()
+#//==================   Consumer
 
         yappi.get_func_stats().print_all()
 

@@ -19,11 +19,6 @@ class OsirisResultsProducer(Base.BaseProducer):
         print "Starting Osiris Results producer"
         return self.getResults(self.browser)
 
-    def setup(self):
-        browser = sel.createBrowser()
-        browser = sel.login(browser, self.user.username, self.user.password)
-        return browser
-
     def getResults(self, browser):
         browser.get(LinkConfig.OSIRIS_RESULTS)
         source = browser.page_source

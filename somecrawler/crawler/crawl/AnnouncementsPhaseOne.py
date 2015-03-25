@@ -1,15 +1,20 @@
 __author__ = 'j'
+
 from somecrawler.config import LinkConfig, XpathConfig
 import time
 from lxml import etree
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
 from somecrawler.crawler.crawl import Base
+
 class AnnouncementsPhaseOneProducer(Base.BaseProducer):
     #First phase crawler
     user = None
-    def __init__(self, user):
+    browser = None
+
+    def __init__(self, user, browser):
         Base.BaseProducer.__init__(self)
         self.user = user
+        self.browser = browser
 
     def start(self):
         browser = self.setup()
@@ -20,33 +25,27 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
         browser.close()
         return source
 
-    def setup(self):
-        browser = sel.createBrowser()
-        return sel.login(browser, self.user.username, self.user.password)
-
-
 class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):
     source = None
     med_code = LinkConfig.MEDEDELINGEN_PHASE_ONE_CODES
     def __init__(self, source):
         Base.BaseConsumer.__init__(self)
-        self.source = source
+        self.source = etree.HTML(source)
 
     def start(self):
         announcements = {}
         for k,v in self.med_code.items():
-            announcements[str(k)] = self.parse(self.source, str(v)) #ISO has problems
+            announcements[str(k)] = self.parse( str(v)) #ISO has problems
         print announcements
+        return announcements
 
-    def parse(self, html, wid_id):
+    def parse(self, wid_id):
         med = {}
-        source = etree.HTML(html)
-        med['title'] = regex.mededelingenTitle(str(source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_HEADER.format(wid_id))))
-
+        med['title'] = regex.mededelingenTitle(str(self.source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_HEADER.format(wid_id))))
         i = 1
         while 1:
-            text = source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_TEXT.format(wid_id, i))
-            title = source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_TITLE.format(wid_id, i))
+            text = self.source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_TEXT.format(wid_id, i))
+            title = self.source.xpath(XpathConfig.MEDEDELINGEN_PHASE_ONE_TITLE.format(wid_id, i))
             if len(text) == 0:
                 break
             med[regex.filterListUnicode(str(title))] = regex.getNodeNumbers(str(text))

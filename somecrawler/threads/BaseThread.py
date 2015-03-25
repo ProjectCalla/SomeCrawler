@@ -1,15 +1,15 @@
 __author__ = 'j'
 
 import time, threading
-from somecrawler.memory.SharedMemory import SharedMemory
+from somecrawler.memory import SharedMemoryManager
 
 class BaseThread(threading.Thread):
     job = None
-    sharedMem = None
+    shared_mem = None
 
-    def __init__(self):
+    def __init__(self, shared_memory):
         threading.Thread.__init__(self)
-        self.sharedMem = SharedMemory()
+        self.shared_mem = shared_memory
 
     def run(self):
         raise Exception("Unimplemented abstract method: start()")

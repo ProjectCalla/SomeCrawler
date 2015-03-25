@@ -14,6 +14,8 @@ class BaseJob():
 
     user = None
     priority = None
+
+    #Handle browser better
     browser = None
 
     def __init__(self, user, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=False,
