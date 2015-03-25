@@ -1,13 +1,12 @@
 __author__ = 'resul'
 from somecrawler.user.User import User
 from somecrawler.job.ProducerJob import ProducerJob
+from somecrawler.config import Config
 import socket
 import Queue, time
 import Main
 
 class SocketPort:
-    HOST = ''                 # Symbolic name meaning all available interfaces
-    PORT = 50100              # Arbitrary non-privileged port
     def start(self):
         while 1:
             self.open_socket()
@@ -15,7 +14,7 @@ class SocketPort:
 
     def open_socket(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((self.HOST, self.PORT))
+        s.bind((Config.SOCKET_HOST, Config.SOCKET_PORT))
         s.listen(1)
         conn, addr = s.accept()
         print 'Connected by', addr
