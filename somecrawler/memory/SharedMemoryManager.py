@@ -1,4 +1,5 @@
 __author__ = 'j'
+from somecrawler.queue import QueueManager
 import SharedMemory
-producer = SharedMemory.SharedMemory()
-consumer = SharedMemory.SharedMemory()
+shared = SharedMemory.SharedMemory(1)
+queue = QueueManager.QueueManager()

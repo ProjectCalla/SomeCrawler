@@ -4,6 +4,7 @@ from somecrawler.crawler.crawl import Webmail, OsirisPersonalia, AnnouncementsPh
 from somecrawler.job.BaseJob import BaseJob
 import time
 from somecrawler.memory.SharedObject import SharedObject
+from somecrawler.memory import SharedMemoryManager
 
 class ProducerJob(BaseJob):
     webmail_source = None
@@ -12,11 +13,13 @@ class ProducerJob(BaseJob):
     osiris_personalia_source = None
     announcements_phase_one_source = None
     announcements_phase_two_source = None
+    shared_memory = SharedMemoryManager.shared
 
     def start(self):
+        #Executes all the functions below, see BaseJob class
         BaseJob.start(self)
-        self.package_resources()
-
+        self.add_to_shared_memory()
+        print self.shared_memory.pQueue.counter
 
     def webmail(self, user, browser):
         print "Starting webmail"
@@ -32,14 +35,17 @@ class ProducerJob(BaseJob):
         pass
 
     def announcements_phase_one(self, user, browser):
-        pass
-        #self.announcements_phase_one_source = AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user, browser).start()
+        self.announcements_phase_one_source = AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user, browser).start()
 
     def announcements_phase_two(self, user, browser):
         pass
 
+    def add_to_shared_memory(self):
+        print "Adding to shared memory"
+        so = self.package_resources()
+        self.shared_memory.qManager.add_to_queue(self.shared_memory.pQueue, so, so.user.priority)
 
     def package_resources(self):
         so = SharedObject(self.user, self.webmail_source, self.osiris_results_source, self.osiris_credits_source,
             self.osiris_personalia_source, self.announcements_phase_one_source, self.announcements_phase_two_source)
-        print so
+        return so
