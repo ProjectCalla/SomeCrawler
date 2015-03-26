@@ -10,9 +10,9 @@ from somecrawler.threads import BaseThread, ThreadController
 from somecrawler.queue import QueueManager
 import yappi
 
+
 class TestMain:
-    shared_mem_producer = SharedMemoryManager.producer
-    shared_mem_consumer = SharedMemoryManager.consumer
+    queue = SharedMemoryManager.queue
 
     def __init__(self):
         pass
@@ -31,17 +31,27 @@ class TestMain:
         print "creating queue, may take a while..."
         jobs = JobController.create_producer_jobs_from_db()
         for i in range(len(jobs)):
-            self.shared_mem_producer.qManager.add_to_queue(self.shared_mem_producer.pQueue, jobs[i], jobs[i].priority)
+            self.queue.add_to_queue(self.queue.pQueue, jobs[i], jobs[i].priority)
 
-        producer_threads = 10
         thread_con = ThreadController.ThreadController()
+        producer_threads = 2
+        consumer_threads = 1
+
         thread_con.spawn_producer_threads(producer_threads)
         for i in range(producer_threads):
             thread_con.producer_threads[i].start()
 
+#//==================   Consumer
+        thread_con.spawn_consumer_threads(consumer_threads)
+        for i in range(consumer_threads):
+            thread_con.consumer_threads[i].start()
+#//==================   Join threads
         for i in range(producer_threads):
             thread_con.producer_threads[i].join()
-#//==================   Consumer
+
+        for i in range(consumer_threads):
+            thread_con.consumer_threads[i].join()
+
 
         yappi.get_func_stats().print_all()
 

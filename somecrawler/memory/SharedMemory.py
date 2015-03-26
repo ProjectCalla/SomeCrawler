@@ -8,12 +8,15 @@ class SharedMemory(object):
     qManager = QueueManager.QueueManager()
     pQueue = PriorityQueue.PQueue()
 
-def add_item_to_pQueue(job):
-    SharedMemory.pQueue.put(job, job.priority)
+    def __init__(self):
+        pass
 
-def get_item():
-    return SharedMemory.pQueue.get()
+    def add_item_to_pQueue(self, job):
+        self.pQueue.put(job, job.priority)
 
-def add_itemDEBUG():
-    for x in range(0, 10):
-        SharedMemory.qManager.add_to_queue(SharedMemory.pQueue, User.User(str(x), str(x)), 5)
+    def get_item(self):
+        return self.pQueue.get()
+
+    def add_itemDEBUG(self):
+        for x in range(0, 10):
+            self.qManager.add_to_queue(self.pQueue, User.User(str(x), str(x)), 5)

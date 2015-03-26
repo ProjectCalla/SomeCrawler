@@ -28,3 +28,7 @@ def print_jobDEBUG(jobs):
         print jobs[i].user.username
         print jobs[i].user.password
         print jobs[i].__module__
+
+def parse_producer_to_consumer(self):
+
+    pass

@@ -21,19 +21,10 @@ class OsirisPersonaliaProducer(Base.BaseProducer):
 
     def getPersonalia(self, browser):
         browser.get(LinkConfig.OSIRIS_HOME)
-        source = browser.page_source
-        browser.close()
-        return source
+        return browser.page_source
 
-class OsirisPersonaliaConsumer(Base.BaseProducer):
+class OsirisPersonaliaConsumer(Base.BaseConsumer):
     name = OsirisConfig.CONSUMER_NAME
-    source = None
-    user = None
-
-    def __init__(self, user, source):
-        Base.BaseProducer.__init__(self)
-        self.sources = source
-        self.user = user
 
     def start(self):
         print "start"

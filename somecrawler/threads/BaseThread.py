@@ -7,9 +7,9 @@ class BaseThread(threading.Thread):
     job = None
     shared_mem = None
 
-    def __init__(self, shared_memory):
+    def __init__(self, shared_mem):
         threading.Thread.__init__(self)
-        self.shared_mem = shared_memory
+        self.shared_mem = shared_mem
 
     def run(self):
         raise Exception("Unimplemented abstract method: start()")

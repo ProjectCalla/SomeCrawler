@@ -1,4 +1,6 @@
 __author__ = 'j'
+
+from lxml import etree
 from somecrawler.config import LinkConfig, XpathConfig as xpathConf
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
 import time
@@ -14,8 +16,7 @@ class WebmailProducer(Base.BaseProducer):
         self.user = user
         self.browser = browser
 
-    def start(self, cookies={}):
-        if not cookies: cookies = {}
+    def start(self):
         return self.getEmails(self.browser)
 
     def getEmails(self, browser):
@@ -36,9 +37,7 @@ class WebmailProducer(Base.BaseProducer):
         browser.switch_to.frame(browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME))
 
         #browser.find_element_by_id("msglist").text     #old
-        source = browser.page_source
-        browser.close()
-        return source
+        return browser.page_source
 
     def correct_url(self, url):
         if not url.startswith("http://") and not url.startswith("https://"):
@@ -47,20 +46,18 @@ class WebmailProducer(Base.BaseProducer):
 
 
 class WebmailConsumer(Base.BaseConsumer):
-    webmail_source = None
-
-    def __init__(self, webmail_source):
-        Base.BaseConsumer.__init__(self)
-        self.webmail_source = webmail_source
 
     def start(self):
+        self.source = etree.HTML(self.source)
         emails = self.parse()
+        print emails
 
     def parse(self, amount=10):
         emails = {}
         for i in range(1, amount+1):
             item = {}
             for y in range(3, 7):
-                item[str(y)] = regex.filterListUnicode(str(self.webmail_source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i,y))))
+                item[str(y)] = regex.filterListUnicode(str(
+                    self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, y))))
             emails[str(i)] = item
         return emails

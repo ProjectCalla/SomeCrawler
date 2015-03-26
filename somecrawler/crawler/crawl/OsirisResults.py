@@ -21,19 +21,10 @@ class OsirisResultsProducer(Base.BaseProducer):
 
     def getResults(self, browser):
         browser.get(LinkConfig.OSIRIS_RESULTS)
-        source = browser.page_source
-        browser.close()
-        return source
-
+        return browser.page_source
 
 class OsirisResultsConsumer(Base.BaseConsumer):
     name = OsirisConfig.PRODUCER_NAME
-    source = None
-    user = None
-    def __init__(self, user, source):
-        Base.BaseConsumer.__init__(self)
-        self.sources = source
-        self.user = user
 
     def start(self):
         result = self.parse()
