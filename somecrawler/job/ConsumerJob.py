@@ -1,9 +1,12 @@
 __author__ = 'j'
 
-from somecrawler.job import BaseJob
+from somecrawler.job.BaseJob import BaseJob
 import time
 
-class ConsumerJob(BaseJob.BaseJob):
+class ConsumerJob(BaseJob):
+    def start(self):
+        #Consume job
+        pass
 
     def webmail(self, user):
         pass

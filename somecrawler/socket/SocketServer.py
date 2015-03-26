@@ -3,18 +3,21 @@ from somecrawler.user.User import User
 from somecrawler.job.ProducerJob import ProducerJob
 from somecrawler.config import Config
 import socket
-import Queue, time
+import time
+import thread
 import Main
 
 class SocketPort:
     def start(self):
         while 1:
-            self.open_socket()
+            self.open_socket
             print "Closed Connection...."
 
+    @property
     def open_socket(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((Config.SOCKET_HOST, Config.SOCKET_PORT))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.listen(1)
         conn, addr = s.accept()
         print 'Connected by', addr
@@ -24,12 +27,8 @@ class SocketPort:
             a = u.split(',')[0]
             b = u.split(',')[1]
             print eval(a), eval(b)
-            #q.put(data)
-            #for a in range(q.qsize()):
-             #   print q.get()
-                #time.sleep(2)
         conn.close()
-
-        user = User(a, b, 7)
-        ProducerJob(user, osiris_personalia=True)
+        s.close()
+        user = User(eval(a), eval(b), 7)
+        ProducerJob(user, osiris_personalia=False).start()
 SocketPort().start()

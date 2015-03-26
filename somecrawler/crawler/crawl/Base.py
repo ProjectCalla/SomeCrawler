@@ -6,19 +6,19 @@ class BaseProducer():
     def __init__(self):
         pass
 
-    def setup(self):
-        """
-        Create your connection, do settings etc.
-        :return:
-        """
-        raise Exception("Unimplemented abstract method")
-
     def start(self):
         """
         Start the Producer.
         :return:
         """
-        raise Exception("Unimplemented abstract method")
+        raise Exception("Unimplemented abstract method: start()")
+
+    def package(self, shared_object):
+        """
+        Package the data and add to Shared Memory
+        :return:
+        """
+        raise Exception("Unimplemented abstract method: package()")
 
 
 class BaseConsumer():
@@ -31,7 +31,7 @@ class BaseConsumer():
         :return:
         """
         raise Exception("Unimplemented abstract method")
-    def parse(self):
+    def parse(self, args, **kwargs):
         """
         Start the Consumer.
         :return:
