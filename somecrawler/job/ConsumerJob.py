@@ -6,7 +6,6 @@ from somecrawler.job.BaseJob import BaseJob
 import time
 
 class ConsumerJob(BaseJob):
-
     def start(self):
         if self.job_webmail:
             self.webmail_source = self.webmail()
