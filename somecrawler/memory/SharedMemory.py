@@ -7,10 +7,9 @@ class SharedMemory(object):
     #TODO fix this crap
     qManager = QueueManager.QueueManager()
     pQueue = PriorityQueue.PQueue()
-    index = None
 
-    def __init__(self, index):
-        self.index = index
+    def __init__(self):
+        pass
 
     def add_item_to_pQueue(self, job):
         self.pQueue.put(job, job.priority)

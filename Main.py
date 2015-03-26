@@ -32,15 +32,25 @@ class TestMain:
         for i in range(len(jobs)):
             self.queue.add_to_queue(self.queue.pQueue, jobs[i], jobs[i].priority)
 
-        producer_threads = 2
         thread_con = ThreadController.ThreadController()
+        producer_threads = 2
+        consumer_threads = 1
+
         thread_con.spawn_producer_threads(producer_threads)
         for i in range(producer_threads):
             thread_con.producer_threads[i].start()
 
+#//==================   Consumer
+        thread_con.spawn_consumer_threads(consumer_threads)
+        for i in range(consumer_threads):
+            thread_con.consumer_threads[i].start()
+#//==================   Join threads
         for i in range(producer_threads):
             thread_con.producer_threads[i].join()
-#//==================   Consumer
+
+        for i in range(consumer_threads):
+            thread_con.consumer_threads[i].join()
+
 
         yappi.get_func_stats().print_all()
 

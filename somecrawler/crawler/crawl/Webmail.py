@@ -1,4 +1,6 @@
 __author__ = 'j'
+
+from lxml import etree
 from somecrawler.config import LinkConfig, XpathConfig as xpathConf
 from somecrawler.controller import SeleniumController as sel, RegexController as regex
 import time
@@ -44,14 +46,11 @@ class WebmailProducer(Base.BaseProducer):
 
 
 class WebmailConsumer(Base.BaseConsumer):
-    webmail_source = None
-
-    def __init__(self, webmail_source):
-        Base.BaseConsumer.__init__(self)
-        self.webmail_source = webmail_source
 
     def start(self):
+        self.source = etree.HTML(self.source)
         emails = self.parse()
+        print emails
 
     def parse(self, amount=10):
         emails = {}
@@ -59,6 +58,6 @@ class WebmailConsumer(Base.BaseConsumer):
             item = {}
             for y in range(3, 7):
                 item[str(y)] = regex.filterListUnicode(str(
-                    self.webmail_source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, y))))
+                    self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, y))))
             emails[str(i)] = item
         return emails

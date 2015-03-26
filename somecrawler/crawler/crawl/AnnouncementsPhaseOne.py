@@ -17,19 +17,13 @@ class AnnouncementsPhaseOneProducer(Base.BaseProducer):
         self.browser = browser
 
     def start(self):
-        browser = self.setup()
-        browser.get(LinkConfig.HINT_HOME)
+        self.browser.get(LinkConfig.HINT_HOME)
         time.sleep(15)   #Sleep to wait till the Mededelingen loads
         #TODO check if loading exists
-        source = browser.page_source
-        return source
+        return self.browser.page_source
 
 class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):
-    source = None
     med_code = LinkConfig.MEDEDELINGEN_PHASE_ONE_CODES
-    def __init__(self, source):
-        Base.BaseConsumer.__init__(self)
-        self.source = etree.HTML(source)
 
     def start(self):
         announcements = {}
@@ -50,4 +44,3 @@ class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):
             med[regex.filterListUnicode(str(title))] = regex.getNodeNumbers(str(text))
             i += 1
         return med
-

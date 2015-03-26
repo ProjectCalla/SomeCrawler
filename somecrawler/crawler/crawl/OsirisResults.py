@@ -25,12 +25,6 @@ class OsirisResultsProducer(Base.BaseProducer):
 
 class OsirisResultsConsumer(Base.BaseConsumer):
     name = OsirisConfig.PRODUCER_NAME
-    source = None
-    user = None
-    def __init__(self, user, source):
-        Base.BaseConsumer.__init__(self)
-        self.sources = source
-        self.user = user
 
     def start(self):
         result = self.parse()

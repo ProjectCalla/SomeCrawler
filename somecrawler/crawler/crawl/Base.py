@@ -22,8 +22,11 @@ class BaseProducer():
 
 
 class BaseConsumer():
-    def __init__(self):
-        pass
+    source = None
+    user = None
+    def __init__(self, user, source):
+        self.user = user
+        self.source = source
 
     def start(self):
         """
@@ -31,7 +34,8 @@ class BaseConsumer():
         :return:
         """
         raise Exception("Unimplemented abstract method")
-    def parse(self, args, **kwargs):
+
+    def parse(self):
         """
         Start the Consumer.
         :return:
