@@ -2,7 +2,7 @@ __author__ = 'resul'
 import socket
 from somecrawler.config import Config
 
-u = "'0868049', 'Yalihuyuk42'"
+u = "'user', 'pass'"
 
 class Client:
     def start(self):
