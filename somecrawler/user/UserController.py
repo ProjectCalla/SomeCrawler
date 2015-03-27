@@ -18,6 +18,6 @@ class UserController():
             i = 0
             for row in rows:
                 users.append(self.u.createUser(row[1], row[2]))
-                i+=1
+                i += 1
         self.mysql.closeDB(db)
         return users

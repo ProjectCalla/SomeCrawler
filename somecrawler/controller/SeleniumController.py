@@ -1,21 +1,26 @@
 __author__ = 'j'
 from somecrawler.config import LinkConfig
-import time
 from selenium import webdriver
 from pyvirtualdisplay import Display
 from sys import platform as _platform
-import logging, os
+import logging, os, time
+from lxml import etree
+from somecrawler.exception import Exception
 
 def login(browser, username, password):
     print "[SELENIUM_CONTROLLER] Logging in..."
-    logging.info("Logging in ...")
+    logging.info("[SELENIUM_CONTROLLER] Logging in ...")
     browser.get(LinkConfig.HINT_HOME)
     #fill in form
     browser.find_element_by_id("username").send_keys(username)
     browser.find_element_by_id("password").send_keys(password)
     browser.find_element_by_id("submit").click()
-    time.sleep(2)
-    logging.info("Logging in, done.")
+
+    if len(str(etree.HTML(browser.page_source).xpath('//*[@id="content"]/div[1]/h5/text()')).replace("[", "").replace("]", "")) > 3:
+        raise Exception.LoginException()
+
+    time.sleep(1)
+    logging.info("[SELENIUM_CONTROLLER] Logging in, done.")
     return browser
 
 def createBrowser():
@@ -28,7 +33,7 @@ def createBrowser():
     return browser
 
 def closeBrowserFirefox1(browser):
-    logging.info("Closing webdriver and killing firefox process.")
+    logging.info("[SELENIUM_CONTROLLER] Closing webdriver and killing firefox process.")
     browser.close()
 
     #This will fuck your browser up if you use firefox for browsing. Disable this

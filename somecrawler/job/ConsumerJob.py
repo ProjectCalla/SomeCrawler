@@ -8,17 +8,17 @@ import time
 class ConsumerJob(BaseJob):
 
     def start(self):
-        if self.job_webmail:
+        if self.job_configuration.job_webmail:
             self.webmail_source = self.webmail()
-        if self.job_osiris_personalia:
+        if self.job_configuration.job_osiris_personalia:
             self.osiris_personalia_source = self.osiris_personalia()
-        if self.job_osiris_results:
+        if self.job_configuration.job_osiris_results:
             self.osiris_results_source = self.osiris_results()
-        if self.job_osiris_credits:
+        if self.job_configuration.job_osiris_credits:
             self.osiris_credits_source = self.osiris_credits()
-        if self.job_announcements_phase_one:
+        if self.job_configuration.job_announcements_phase_one:
             self.announcements_phase_one_source = self.announcements_phase_one()
-        if self.job_announcements_phase_two:
+        if self.job_configuration.job_announcements_phase_two:
             self.announcements_phase_two_source = self.announcements_phase_two()
 
     def webmail(self):

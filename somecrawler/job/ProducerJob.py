@@ -3,7 +3,7 @@ __author__ = 'j'
 from somecrawler.crawler.crawl import Webmail, OsirisPersonalia, AnnouncementsPhaseOne, OsirisCredits, OsirisResults
 from somecrawler.job.BaseJob import BaseJob
 from somecrawler.job.ConsumerJob import ConsumerJob
-
+from somecrawler.exception import Exception
 import time
 from somecrawler.memory.SharedObject import SharedObject
 from somecrawler.memory import SharedMemoryManager
@@ -20,26 +20,30 @@ class ProducerJob(BaseJob):
 
     def start(self):
         #Executes all the functions below, see BaseJob class
-        self.browser = sel.login(sel.createBrowser(), self.user.username, self.user.password)
-        BaseJob.start(self)
-        self.browser.close()
-        self.add_to_shared_memory()
+        try:
+            self.browser = sel.login(sel.createBrowser(), self.user.username, self.user.password)
+            BaseJob.start(self)
+            self.browser.close()
+            self.add_to_shared_memory()
+        except Exception.LoginException:
+            print "Not logged in"
 
     def webmail(self):
         print "Starting webmail"
         return Webmail.WebmailProducer(self.user, self.browser).start()
 
     def osiris_results(self):
-        pass
-        #self.osiris_results_source = OsirisResults.OsirisResultsProducer(self.user, self.browser).start()
+        return OsirisResults.OsirisResultsProducer(self.user, self.browser).start()
+
     def osiris_personalia(self):
-        pass
-        #self.osiris_personalia_source = OsirisPersonalia.OsirisPersonaliaProducer(self.user, self.browser).start()
+        return OsirisPersonalia.OsirisPersonaliaProducer(self.user, self.browser).start()
+
     def osiris_credits(self):
         pass
+
     def announcements_phase_one(self):
-        pass
-        #self.announcements_phase_one_source = AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user, self.browser).start()
+        return AnnouncementsPhaseOne.AnnouncementsPhaseOneProducer(self.user, self.browser).start()
+
     def announcements_phase_two(self):
         pass
 
@@ -59,12 +63,9 @@ class ProducerJob(BaseJob):
     def create_consumer_job(self):
         so = self.package_resources()
         self.print_soDEBUG(so)
-        return ConsumerJob(self.user, webmail=self.job_webmail, osiris_personalia=self.job_osiris_personalia,
-            osiris_results=self.job_osiris_results, osiris_credits=self.job_osiris_credits,
-            announcements_phase_one=self.job_announcements_phase_one,
-            announcements_phase_two=self.job_announcements_phase_two, shared_object=so)
+        return ConsumerJob(self.user, shared_object=so)
 
-    def print_soDEBUG(self,so):
+    def print_soDEBUG(self, so):
         if so.announcements_phase_one_source != None:
              print "announcements_phase_one_source = not null"
         else:

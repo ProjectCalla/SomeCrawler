@@ -1,6 +1,7 @@
 __author__ = 'j'
 import ConsumerJob, ProducerJob
 from somecrawler.user import UserController, User
+from somecrawler.job.JobConfiguration import JobConfiguration
 
 def create_producer_jobs_from_db():
     jobs = []
@@ -19,8 +20,8 @@ def create_consumer_jobs_from_db():
 
 def create_job(username, password, priority=5, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=False,
                  announcements_phase_one=False, announcements_phase_two=False):
-    return ConsumerJob.ConsumerJob(User.User(username, password, priority), webmail, osiris_personalia,
-                                   osiris_results, osiris_credits, announcements_phase_one, announcements_phase_two)
+    return ConsumerJob.ConsumerJob(User.User(username, password, JobConfiguration(webmail, osiris_personalia,
+                    osiris_results, osiris_credits, announcements_phase_one, announcements_phase_two)))
 
 def print_jobDEBUG(jobs):
     for i in range(len(jobs)):

@@ -5,13 +5,8 @@ from somecrawler.controller import SeleniumController as sel
 class BaseJob():
     #To add an job at its var below, add it to the init and define own function
     thread_name = "BaseJob"
-    job_webmail = None
-    job_osiris_personalia = None
-    job_osiris_results = None
-    job_osiris_credits = None
-    job_announcements_phase_one = None
-    job_announcements_phase_two = None
 
+    job_configuration = None
     user = None
     priority = None
 
@@ -19,32 +14,25 @@ class BaseJob():
     browser = None
     shared_object = None
 
-    def __init__(self, user, webmail=True, osiris_personalia=False, osiris_results=True, osiris_credits=False,
-                 announcements_phase_one=False, announcements_phase_two=False, shared_object=None):
+    def __init__(self, user, shared_object=None):
         #General
         self.user = user
+        self.job_configuration = user.job_configuration
         self.priority = user.priority
-        #Jobs
-        self.job_announcements_phase_one = announcements_phase_one
-        self.job_announcements_phase_two = announcements_phase_two
-        self.job_osiris_personalia = osiris_personalia
-        self.job_osiris_credits = osiris_credits
-        self.job_osiris_results = osiris_results
-        self.job_webmail = webmail
         self.shared_object = shared_object
 
     def start(self):
-        if self.job_webmail:
+        if self.job_configuration.job_webmail:
             self.webmail_source = self.webmail()
-        if self.job_osiris_personalia:
+        if self.job_configuration.job_osiris_personalia:
             self.osiris_personalia_source = self.osiris_personalia()
-        if self.job_osiris_results:
+        if self.job_configuration.job_osiris_results:
             self.osiris_results_source = self.osiris_results()
-        if self.job_osiris_credits:
+        if self.job_configuration.job_osiris_credits:
             self.osiris_credits_source = self.osiris_credits()
-        if self.job_announcements_phase_one:
+        if self.job_configuration.job_announcements_phase_one:
             self.announcements_phase_one_source = self.announcements_phase_one()
-        if self.job_announcements_phase_two:
+        if self.job_configuration.job_announcements_phase_two:
             self.announcements_phase_two_source = self.announcements_phase_two()
 
     def webmail(self):

@@ -5,8 +5,7 @@ from somecrawler.controller import SeleniumController as sel, RegexController as
 from somecrawler.crawler.crawl import Base
 
 class OsirisResultsProducer(Base.BaseProducer):
-    #TODO clean up and use some hierarchy
-    name = OsirisConfig.CONSUMER_NAME
+    name = OsirisConfig.PRODUCER_NAME
     user = None
     browser = None
 
@@ -21,14 +20,13 @@ class OsirisResultsProducer(Base.BaseProducer):
 
     def getResults(self, browser):
         browser.get(LinkConfig.OSIRIS_RESULTS)
-        return browser.page_source
+        return etree.HTML(browser.page_source)
 
 class OsirisResultsConsumer(Base.BaseConsumer):
-    name = OsirisConfig.PRODUCER_NAME
+    name = OsirisConfig.CONSUMER_NAME
 
     def start(self):
         result = self.parse()
-        pass
 
     def parse(self):
         items = {}
@@ -43,4 +41,5 @@ class OsirisResultsConsumer(Base.BaseConsumer):
             item['result'] = self.source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 8))[0]
             item['mutation_date'] = self.source.xpath(xpathConf.OSIRIS_RESULTS_MAIN.format(i, 10))[0]
             items[str(i)] = item
+        print items
         return items

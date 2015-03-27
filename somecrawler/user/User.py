@@ -4,8 +4,11 @@ class User():
     username = None
     password = None
     priority = None
-    def __init__(self, username, password, priority=5):
+    job_configuration = None
+
+    def __init__(self, username, password, job_configuration, priority=5):
         self.username = username
         self.password = password
+        self.job_configuration = job_configuration
         self.priority = priority
 

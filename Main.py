@@ -1,8 +1,9 @@
 __author__ = 'j'
 
 from somecrawler.memory import SharedMemoryManager
+from somecrawler.controller import SeleniumController as sel
 from somecrawler.queue import QueueManager
-from somecrawler.job import ConsumerJob, ProducerJob, JobController
+from somecrawler.job import ConsumerJob, ProducerJob, JobController, JobConfiguration
 from somecrawler.user import User
 import thread, time
 from somecrawler.exp import SomeThread
@@ -51,20 +52,23 @@ class TestMain:
         for i in range(consumer_threads):
             thread_con.consumer_threads[i].join()
 
-
         yappi.get_func_stats().print_all()
 
     def testJob(self):
         yappi.start()
-        u = User.User("user", "pass")
-        job = ProducerJob.ProducerJob(u, webmail=True, osiris_personalia=True, osiris_results=True, osiris_credits=False,
-                 announcements_phase_one=True, announcements_phase_two=False)
+        u = User.User("user", "pass", JobConfiguration.JobConfiguration())
+        job = ProducerJob.ProducerJob(u)
         job.start()
         yappi.get_func_stats().print_all()
 
 
+    def yetAnotherTest(self):
+        u = User.User("user", "pass", JobConfiguration.JobConfiguration())
+        ProducerJob.ProducerJob(u).start()
 
 if __name__ == "__main__":
     TestMain().start()
     #TestMain().testJob()
     #TestMain().test2()
+
+    #TestMain().yetAnotherTest()
