@@ -14,6 +14,7 @@ import yappi
 
 class TestMain:
     queue = SharedMemoryManager.queue
+
     def __init__(self):
         pass
     def printUser(self, user):
