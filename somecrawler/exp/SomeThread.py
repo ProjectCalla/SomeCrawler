@@ -10,7 +10,3 @@ class SomeThread():
             time.sleep(1)
             print "[Thread info {0}] {1} :: {2}".format(name, "active count", self.threading.active_count())
             print "[Thread info {0}] {1} :: {2}".format(name, "current thread", self.threading.current_thread())
-
-
-
-

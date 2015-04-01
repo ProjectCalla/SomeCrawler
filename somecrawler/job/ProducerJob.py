@@ -1,13 +1,14 @@
+from somecrawler.selenium import SeleniumController as sel
+
 __author__ = 'j'
 
-from somecrawler.crawler.crawl import Webmail, OsirisPersonalia, AnnouncementsPhaseOne, OsirisCredits, OsirisResults
+from somecrawler.crawler.crawl import Webmail, OsirisPersonalia, AnnouncementsPhaseOne, OsirisResults
 from somecrawler.job.BaseJob import BaseJob
 from somecrawler.job.ConsumerJob import ConsumerJob
 from somecrawler.exception import Exception
-import time
 from somecrawler.memory.SharedObject import SharedObject
 from somecrawler.memory import SharedMemoryManager
-from somecrawler.controller import SeleniumController as sel
+
 
 class ProducerJob(BaseJob):
     webmail_source = None
@@ -21,9 +22,12 @@ class ProducerJob(BaseJob):
     def start(self):
         #Executes all the functions below, see BaseJob class
         try:
-            self.browser = sel.login(sel.createBrowser(), self.user.username, self.user.password)
+            selenium_things = sel.create_browser()
+
+            self.browser = sel.login(selenium_things, self.user.username, self.user.password)
+
             BaseJob.start(self)
-            self.browser.close()
+            selenium_things.stop()
             self.add_to_shared_memory()
         except Exception.LoginException:
             print "Not logged in"

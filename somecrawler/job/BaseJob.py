@@ -1,6 +1,5 @@
 __author__ = 'j'
-from somecrawler.memory import SharedObject
-from somecrawler.controller import SeleniumController as sel
+
 
 class BaseJob():
     #To add an job at its var below, add it to the init and define own function

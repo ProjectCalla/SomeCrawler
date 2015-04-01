@@ -9,6 +9,7 @@ WEBMAIL_HOME = "https://webmail.hro.nl"
 
 #Osiris
 OSIRIS_HOME = "https://osiris.hro.nl"
+OSIRIS_PERSONALIA = "https://student.osiris.hro.nl:9021/osiris_student/ToonPersonalia.do"
 OSIRIS_RESULTS = "https://student.osiris.hro.nl:9021/osiris_student/ToonResultaten.do"
 OSIRIS_VOORTGANG = "https://student.osiris.hro.nl:9021/osiris_student/Voortgang.do"
 OSIRIS_VOORGANG_FILE_LOCATION = "http://reports.osiris.hro.nl:8888/reports/rwservlet/getfile/"

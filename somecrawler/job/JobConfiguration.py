@@ -2,7 +2,7 @@ __author__ = 'j'
 
 class JobConfiguration(object):
     job_announcements_phase_one = None
-    job_announcements_phase_two  = None
+    job_announcements_phase_two = None
     job_osiris_personalia = None
     job_osiris_credits = None
     job_osiris_results = None

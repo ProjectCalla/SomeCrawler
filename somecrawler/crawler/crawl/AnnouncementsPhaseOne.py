@@ -1,34 +1,37 @@
 __author__ = 'j'
 
-from somecrawler.config import LinkConfig, XpathConfig
 import time
 from lxml import etree
-from somecrawler.controller import SeleniumController as sel, RegexController as regex
+
+from somecrawler.config import LinkConfig, XpathConfig
+from somecrawler.controller import RegexController as regex
 from somecrawler.crawler.crawl import Base
+
 
 class AnnouncementsPhaseOneProducer(Base.BaseProducer):
     #First phase crawler
     user = None
     browser = None
 
-    def __init__(self, user, browser):
+    def __init__(self, user, selenium_things):
         Base.BaseProducer.__init__(self)
         self.user = user
-        self.browser = browser
+        self.browser = selenium_things.browser
 
     def start(self):
         self.browser.get(LinkConfig.HINT_HOME)
         time.sleep(15)   #Sleep to wait till the Mededelingen loads
         #TODO check if loading exists
-        return self.browser.page_source
+        return etree.HTML(self.browser.page_source)
 
 class AnnouncementsPhaseOneConsumer(Base.BaseConsumer):
     med_code = LinkConfig.MEDEDELINGEN_PHASE_ONE_CODES
 
     def start(self):
+        print "starting consumer Phase One"
         announcements = {}
-        for k,v in self.med_code.items():
-            announcements[str(k)] = self.parse( str(v)) #ISO has problems
+        for k, v in self.med_code.items():
+            announcements[str(k)] = self.parse(str(v)) #ISO has problems
         print announcements
         return announcements
 

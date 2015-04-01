@@ -1,14 +1,10 @@
 __author__ = 'j'
 
 from somecrawler.memory import SharedMemoryManager
-from somecrawler.controller import SeleniumController as sel
-from somecrawler.queue import QueueManager
-from somecrawler.job import ConsumerJob, ProducerJob, JobController, JobConfiguration
+from somecrawler.job import ProducerJob, JobController, JobConfiguration
 from somecrawler.user import User
-import thread, time
-from somecrawler.exp import SomeThread
-from somecrawler.threads import BaseThread, ThreadController
-from somecrawler.queue import QueueManager
+from somecrawler.threads import ThreadController
+from somecrawler.config import Config
 import yappi
 
 
@@ -27,6 +23,7 @@ class TestMain:
         #set producer threads
         #set consumer threads
         #Done
+
         yappi.start()
 #//===================   Producer
         print "creating queue, may take a while..."
@@ -35,22 +32,22 @@ class TestMain:
             self.queue.add_to_queue(self.queue.pQueue, jobs[i], jobs[i].priority)
 
         thread_con = ThreadController.ThreadController()
-        producer_threads = 2
-        consumer_threads = 1
 
-        thread_con.spawn_producer_threads(producer_threads)
-        for i in range(producer_threads):
+        thread_con.spawn_producer_threads(Config.PRODUCER_THREADS)
+        for i in range(Config.PRODUCER_THREADS):
             thread_con.producer_threads[i].start()
 
 #//==================   Consumer
-        thread_con.spawn_consumer_threads(consumer_threads)
-        for i in range(consumer_threads):
+        thread_con.spawn_consumer_threads(Config.CONSUMER_THREADS)
+        for i in range(Config.CONSUMER_THREADS):
             thread_con.consumer_threads[i].start()
+
+
 #//==================   Join threads
-        for i in range(producer_threads):
+        for i in range(Config.PRODUCER_THREADS):
             thread_con.producer_threads[i].join()
 
-        for i in range(consumer_threads):
+        for i in range(Config.CONSUMER_THREADS):
             thread_con.consumer_threads[i].join()
 
         yappi.get_func_stats().print_all()
@@ -64,9 +61,13 @@ class TestMain:
 
 
     def yetAnotherTest(self):
-        u = User.User("user", "pass", JobConfiguration.JobConfiguration())
+        u = User.User("user", "pass", JobConfiguration.JobConfiguration(webmail=False, osiris_personalia=True))
         ProducerJob.ProducerJob(u).start()
 
+    def sanity_checks(self):
+        #Check for internet
+        #Check OS
+        pass
 if __name__ == "__main__":
     TestMain().start()
     #TestMain().testJob()

@@ -10,10 +10,9 @@ import Main
 class SocketPort:
     def start(self):
         while 1:
-            self.open_socket
+            self.open_socket()
             print "Closed Connection...."
 
-    @property
     def open_socket(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((Config.SOCKET_HOST, Config.SOCKET_PORT))
@@ -29,6 +28,5 @@ class SocketPort:
             print eval(a), eval(b)
         conn.close()
         s.close()
-        user = User(eval(a), eval(b), 7)
-        ProducerJob(user, osiris_personalia=False).start()
+
 SocketPort().start()

@@ -1,12 +1,15 @@
 __author__ = 'j'
 
 from lxml import etree
-from somecrawler.config import LinkConfig, XpathConfig as xpathConf
-from somecrawler.controller import SeleniumController as sel, RegexController as regex
 import time
 import logging
-from somecrawler.crawler.crawl import Base
+
 from selenium.webdriver.common.alert import Alert
+
+from somecrawler.config import LinkConfig, XpathConfig as xpathConf
+from somecrawler.controller import RegexController as regex
+from somecrawler.crawler.crawl import Base
+
 
 class WebmailProducer(Base.BaseProducer):
     user = None
@@ -14,7 +17,7 @@ class WebmailProducer(Base.BaseProducer):
     def __init__(self, user, browser):
         Base.BaseProducer.__init__(self)
         self.user = user
-        self.browser = browser
+        self.browser = browser.browser
 
     def start(self):
         return self.getEmails(self.browser)
@@ -23,9 +26,7 @@ class WebmailProducer(Base.BaseProducer):
         browser.get(self.correct_url(LinkConfig.WEBMAIL_HOME))
         logging.info("Trying to get emails")
         logging.info("Sleeping 15 seconds ...")
-        #sleep for
-        time.sleep(15)
-
+        time.sleep(2)
         #Alerts
         try:
             Alert(browser).accept()

@@ -12,8 +12,8 @@ class ThreadController():
 
     def spawn_producer_threads(self, amount):
         for i in range(amount):
-            self.producer_threads.append(ProducerThread.ProducerThread(SharedMemoryManager.queue))
+            self.producer_threads.append(ProducerThread.ProducerThread(SharedMemoryManager.queue, "Thread %s" % str(i)))
 
     def spawn_consumer_threads(self, amount):
         for i in range(amount):
-            self.consumer_threads.append(ConsumerThread.ConsumerThread(SharedMemoryManager.shared))
+            self.consumer_threads.append(ConsumerThread.ConsumerThread(SharedMemoryManager.shared, "Thread %s" % str(i)))

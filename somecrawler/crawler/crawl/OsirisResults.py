@@ -1,18 +1,18 @@
 __author__ = 'j'
 from somecrawler.config import OsirisConfig, LinkConfig, XpathConfig as xpathConf
 from lxml import etree
-from somecrawler.controller import SeleniumController as sel, RegexController as regex
 from somecrawler.crawler.crawl import Base
+
 
 class OsirisResultsProducer(Base.BaseProducer):
     name = OsirisConfig.PRODUCER_NAME
     user = None
     browser = None
 
-    def __init__(self, user, browser):
+    def __init__(self, user, selenium_things):
         Base.BaseProducer.__init__(self)
         self.user = user
-        self.browser = browser
+        self.browser = selenium_things.browser
 
     def start(self):
         print "Starting Osiris Results producer"
@@ -21,6 +21,7 @@ class OsirisResultsProducer(Base.BaseProducer):
     def getResults(self, browser):
         browser.get(LinkConfig.OSIRIS_RESULTS)
         return etree.HTML(browser.page_source)
+
 
 class OsirisResultsConsumer(Base.BaseConsumer):
     name = OsirisConfig.CONSUMER_NAME

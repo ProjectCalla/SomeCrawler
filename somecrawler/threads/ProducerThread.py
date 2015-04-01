@@ -3,6 +3,7 @@ __author__ = 'j'
 from somecrawler.memory import SharedMemoryManager
 import threading, time
 from somecrawler.threads.BaseThread import BaseThread
+from somecrawler.config import Config
 
 class ProducerThread(BaseThread):
 
@@ -16,24 +17,7 @@ class ProducerThread(BaseThread):
     def initialize(self):
         index = 0
         while 1:
-            if index == 10:
-                break
-            while 1:
-                try:
-                    if self.shared_mem.pQueue.counter != 0:
-                        self.job = self.shared_mem.pQueue.get()
-                        #Synchronize
-                        break
-                    else:
-                        int("goto except")
-                except:
-                    print "[PRODUCER_THREAD] self.sharedMem.pQueue.counter = %s" % self.shared_mem.pQueue.counter
-                    if index == 10:
-                        print index
-                        break
-                    time.sleep(1)
-
-                    index += 1
+            self.get_job()
             if self.job != None:
                 self.execute_job()
         print "Donejob"
@@ -43,6 +27,14 @@ class ProducerThread(BaseThread):
         self.job.start()
         print "Done"
 
-
-    def add_to_shared_memory(self):
-        pass
+    def get_job(self):
+        i = 0
+        while 1:
+            if self.shared_mem.pQueue.counter != 0:
+                self.job = self.shared_mem.pQueue.get()
+                return
+            else:
+                time.sleep(1)
+                i += 1
+                if i >= Config.timeout:
+                    "Stop thread, but how?"

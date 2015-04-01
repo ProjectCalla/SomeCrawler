@@ -1,7 +1,14 @@
 __author__ = 'j'
 
-CONSUMER_THREADS = 60
-PRODUCER_THREADS = 10
+PRODUCER_THREADS = 3
+CONSUMER_THREADS = 1
+
 
 SOCKET_HOST = ''
 SOCKET_PORT = 32451
+
+
+'''
+Time in seconds to stop the application without consuming activity
+'''
+timeout = 20
