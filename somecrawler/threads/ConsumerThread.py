@@ -11,20 +11,23 @@ class ConsumerThread(BaseThread):
         #check if done
         #done? pull new job out of queue
         #start job
-        print "Starting thread"
+        start_time = time.time()
         self.initialize()
+        self._print("--- %s seconds ---" % (time.time() - start_time))
 
     def initialize(self):
         index = 0
         while 1:
-            self.get_job()
+            if self.get_job() == -1:
+                self._print("Thread stopped...")
+                break
             self.execute_job()
         print "Donejob"
 
     def execute_job(self):
         #lock_object = self.l
         self.job.start()
-        print "Done"
+        self._print("Done")
 
     def get_job(self):
         i = 0
@@ -36,4 +39,4 @@ class ConsumerThread(BaseThread):
                 time.sleep(1)
                 i += 1
                 if i >= Config.timeout:
-                    print "Stop thread, but how?"
+                    return -1

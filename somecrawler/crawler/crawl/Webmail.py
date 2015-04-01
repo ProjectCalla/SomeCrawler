@@ -20,25 +20,26 @@ class WebmailProducer(Base.BaseProducer):
         self.browser = browser.browser
 
     def start(self):
-        return self.getEmails(self.browser)
+        return self.getEmails()
 
-    def getEmails(self, browser):
-        browser.get(self.correct_url(LinkConfig.WEBMAIL_HOME))
+    def getEmails(self):
+        self.browser.get(self.correct_url(LinkConfig.WEBMAIL_HOME))
         logging.info("Trying to get emails")
         logging.info("Sleeping 15 seconds ...")
         time.sleep(2)
         #Alerts
         try:
-            Alert(browser).accept()
+            Alert(self.browser).accept()
+            Alert(self.browser).dismiss()
             logging.info("Alert found on page.. Trying to accept alert.")
         except:
             pass
         logging.info("Done sleeping 15 seconds.")
-        browser.maximize_window()
-        browser.switch_to.frame(browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME))
+        self.browser.maximize_window()
+        self.browser.switch_to.frame(self.browser.find_element_by_xpath(xpathConf.WEBMAIL_FRAME))
 
         #browser.find_element_by_id("msglist").text     #old
-        return browser.page_source
+        return self.browser.page_source
 
     def correct_url(self, url):
         if not url.startswith("http://") and not url.startswith("https://"):

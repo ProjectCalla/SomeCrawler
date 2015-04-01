@@ -42,7 +42,6 @@ class TestMain:
         for i in range(Config.CONSUMER_THREADS):
             thread_con.consumer_threads[i].start()
 
-
 #//==================   Join threads
         for i in range(Config.PRODUCER_THREADS):
             thread_con.producer_threads[i].join()

@@ -10,5 +10,9 @@ class JustSeleniumThings(object):
         self.browser = browser
 
     def stop(self):
-        self.display.stop()
-        self.browser.close()
+        try:
+            self.display.stop()
+            #After browser.close() it tries to make a connection with a TCP socket, no idea why.
+            self.browser.close()
+        except:
+            print "Couldn't close.."

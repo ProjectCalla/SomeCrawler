@@ -11,7 +11,7 @@ class ProducerThread(BaseThread):
         #check if done
         #done? pull new job out of queue
         #start job
-        print "Starting thread"
+        self._print("Starting thread")
         self.initialize()
 
     def initialize(self):

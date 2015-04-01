@@ -27,4 +27,5 @@ class BaseThread(threading.Thread):
             print "{0} -> {1}".format(name, time.time())
             time.sleep(1)
 
-    def _print(self):
+    def _print(self, message):
+        print "{0}{1}: {2}".format(self.color, self.name, message)

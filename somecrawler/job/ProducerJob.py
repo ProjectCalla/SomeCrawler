@@ -23,12 +23,13 @@ class ProducerJob(BaseJob):
         #Executes all the functions below, see BaseJob class
         try:
             selenium_things = sel.create_browser()
-
             self.browser = sel.login(selenium_things, self.user.username, self.user.password)
 
             BaseJob.start(self)
+
             selenium_things.stop()
             self.add_to_shared_memory()
+
         except Exception.LoginException:
             print "Not logged in"
 
