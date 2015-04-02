@@ -1,5 +1,6 @@
 from somecrawler.config import LinkConfig
-from somecrawler.controller import RegexController as regex
+from somecrawler.utils import RegexController as regex
+
 __author__ = 'j'
 
 import requests

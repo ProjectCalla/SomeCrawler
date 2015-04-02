@@ -15,7 +15,7 @@ class BaseThread(threading.Thread):
         self.name = name
 
     def run(self):
-        raise Exception("Unimplemented abstract method: start()")
+        raise Exception("Unimplemented abstract method: run()")
         #check queue
         #get Job
         #Job.start()

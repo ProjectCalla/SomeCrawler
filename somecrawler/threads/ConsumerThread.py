@@ -38,5 +38,5 @@ class ConsumerThread(BaseThread):
             else:
                 time.sleep(1)
                 i += 1
-                if i >= Config.timeout:
+                if i > Config.timeout:
                     return -1

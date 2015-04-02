@@ -1,10 +1,11 @@
+from somecrawler.utils import RegexController as regex
+
 __author__ = 'j'
 
 import time
 from lxml import etree
 
 from somecrawler.config import LinkConfig, XpathConfig
-from somecrawler.controller import RegexController as regex
 from somecrawler.crawler.crawl import Base
 
 

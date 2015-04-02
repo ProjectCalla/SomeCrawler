@@ -1,3 +1,5 @@
+from somecrawler.utils import RegexController as regex
+
 __author__ = 'j'
 
 from lxml import etree
@@ -7,7 +9,6 @@ import logging
 from selenium.webdriver.common.alert import Alert
 
 from somecrawler.config import LinkConfig, XpathConfig as xpathConf
-from somecrawler.controller import RegexController as regex
 from somecrawler.crawler.crawl import Base
 
 
@@ -58,8 +59,10 @@ class WebmailConsumer(Base.BaseConsumer):
         emails = {}
         for i in range(1, amount+1):
             item = {}
-            for y in range(3, 7):
-                item[str(y)] = regex.filterListUnicode(str(
-                    self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, y))))
+            item['name'] = regex.filterListUnicode(str(self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, 3))))
+            item['subject'] = regex.filterListUnicode(str(self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, 4))))
+            item['date'] = regex.filterListUnicode(str(self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, 5))))
+            item['size'] = regex.filterListUnicode(str(self.source.xpath(xpathConf.WEBMAIL_EMAIL_INFO.format(i, 6))))
             emails[str(i)] = item
         return emails
+

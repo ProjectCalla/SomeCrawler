@@ -5,4 +5,4 @@ class LoginException(Exception):
         super(LoginException, self).__init__("Coulnt log in. Check your username and password.")
 
         # Now for your custom code...
-        self.errors = "Login Error."
+        self.errors = "Login Error"

@@ -1,5 +1,5 @@
 __author__ = 'j'
-from somecrawler.config import MySqlConfig as mysqlConf
+from somecrawler.config import MySqlConfig as mysql_conf
 from somecrawler.manager import MySqlManager
 from somecrawler.user import UserManager
 
@@ -11,7 +11,7 @@ class UserController():
         pass
     def getAllUsers(self):
         users = []
-        query = "SELECT * FROM {0} ;".format(mysqlConf.TABLE_USER)
+        query = "SELECT * FROM {0}.{1} ;".format(mysql_conf.DATABASE_NAME_DEBUG, mysql_conf.TABLE_USER_DEBUG)
         db = self.mysql.openDB()
         rows = self.mysql.executeQuery(db, query).fetchall()
         if rows is not None:
