@@ -28,5 +28,3 @@ class SocketPort:
             print eval(a), eval(b)
         conn.close()
         s.close()
-
-SocketPort().start()

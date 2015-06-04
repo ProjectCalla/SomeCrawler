@@ -5,6 +5,7 @@ from somecrawler.job import ProducerJob, JobController, JobConfiguration
 from somecrawler.user import User
 from somecrawler.threads import ThreadController
 from somecrawler.config import Config
+from somecrawler.threads.SocketThread import SocketThread
 import yappi
 
 
@@ -25,6 +26,9 @@ class TestMain:
         #Done
 
         yappi.start()
+        #Starting the socket
+        SocketThread().start()
+
 #//===================   Producer
         print "creating queue, may take a while..."
         jobs = JobController.create_producer_jobs_from_db()
@@ -67,6 +71,7 @@ class TestMain:
         #Check for internet
         #Check OS
         pass
+
 if __name__ == "__main__":
     TestMain().start()
     #TestMain().testJob()

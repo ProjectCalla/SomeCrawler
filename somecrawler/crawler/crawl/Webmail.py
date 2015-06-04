@@ -53,6 +53,7 @@ class WebmailConsumer(Base.BaseConsumer):
     def start(self):
         self.source = etree.HTML(self.source)
         emails = self.parse()
+
         print emails
 
     def parse(self, amount=10):
