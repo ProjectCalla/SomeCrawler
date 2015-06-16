@@ -1,13 +1,12 @@
 __author__ = 'resul'
-from somecrawler.user.User import User
-from somecrawler.job.ProducerJob import ProducerJob
 from somecrawler.config import Config
 import socket
-import time
-import thread
-import Main
 
-class SocketPort:
+
+class SocketPort():
+    def __init__(self):
+        pass
+
     def start(self):
         while 1:
             self.open_socket()

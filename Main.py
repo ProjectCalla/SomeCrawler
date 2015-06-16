@@ -1,12 +1,13 @@
 __author__ = 'j'
 
+import yappi
+
 from somecrawler.memory import SharedMemoryManager
 from somecrawler.job import ProducerJob, JobController, JobConfiguration
 from somecrawler.user import User
-from somecrawler.threads import ThreadController
+from somecrawler.threads import ThreadController, SocketThread
 from somecrawler.config import Config
 from somecrawler.threads.SocketThread import SocketThread
-import yappi
 
 
 class TestMain:
